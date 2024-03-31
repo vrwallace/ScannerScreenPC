@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units Count="29">
+      <Unit0>
+        <Filename Value="project1.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="12" Y="7"/>
+        <UsageCount Value="90"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="scannerscreen.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form1"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ScannerScreen"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="340"/>
+        <CursorPos X="129" Y="378"/>
+        <UsageCount Value="90"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="codes2.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Formcodes"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="3" Y="9"/>
+        <UsageCount Value="27"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="unitrealtimegrid.pas"/>
+        <ComponentName Value="FormRealTimeGrid"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="unitRealTimeGrid"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="58" Y="69"/>
+        <UsageCount Value="42"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="codes.pas"/>
+        <ComponentName Value="FormCodes"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="Codes"/>
+        <TopLine Value="24"/>
+        <CursorPos X="43" Y="49"/>
+        <UsageCount Value="34"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="C:\synalist-code-185-trunk\synalist-code-185-trunk\synaser.pas"/>
+        <TopLine Value="49"/>
+        <CursorPos X="23" Y="68"/>
+        <UsageCount Value="12"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="C:\lazarus\lcl\customtimer.pas"/>
+        <UnitName Value="CustomTimer"/>
+        <TopLine Value="154"/>
+        <CursorPos Y="181"/>
+        <UsageCount Value="28"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="C:\lazarus\fpc\2.6.2\source\rtl\inc\mathh.inc"/>
+        <CursorPos X="15" Y="21"/>
+        <UsageCount Value="18"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="C:\synalist-code-186-trunk\synaser.pas"/>
+        <TopLine Value="25"/>
+        <CursorPos X="100" Y="45"/>
+        <UsageCount Value="16"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="C:\thtml\htmlun2.pas"/>
+        <TopLine Value="478"/>
+        <CursorPos X="6" Y="493"/>
+        <UsageCount Value="14"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="codes.lfm"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="C:\lazarus\components\printers\win32\winprinters.inc"/>
+        <TopLine Value="445"/>
+        <CursorPos X="36" Y="459"/>
+        <UsageCount Value="10"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="C:\lazarus\fpc\2.6.2\source\rtl\inc\systemh.inc"/>
+        <TopLine Value="934"/>
+        <CursorPos X="11" Y="948"/>
+        <UsageCount Value="12"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="C:\Developer\lazarus\packager\registration\fcllaz.pas"/>
+        <CursorPos X="57" Y="8"/>
+        <UsageCount Value="10"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="..\synalist-code-185-trunk\laz_synapse.pas"/>
+        <CursorPos Y="18"/>
+        <UsageCount Value="10"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="..\synalist-code-190-trunk\synafpc.pas"/>
+        <TopLine Value="120"/>
+        <CursorPos X="3" Y="143"/>
+        <UsageCount Value="12"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="..\synalist-code-185-trunko\synafpc.pas"/>
+        <TopLine Value="119"/>
+        <CursorPos X="3" Y="143"/>
+        <UsageCount Value="10"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="..\synapse40\source\lib\synafpc.pas"/>
+        <TopLine Value="112"/>
+        <CursorPos X="3" Y="136"/>
+        <UsageCount Value="10"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="..\synalist-code-186-trunk\synafpc.pas"/>
+        <TopLine Value="101"/>
+        <CursorPos X="3" Y="143"/>
+        <UsageCount Value="10"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="..\synalist-code-185-trunko\laz_synapse.pas"/>
+        <CursorPos X="78" Y="11"/>
+        <UsageCount Value="10"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="C:\Developer\lazarus\packager\registration\lazaruspackageintf.pas"/>
+        <UnitName Value="LazarusPackageIntf"/>
+        <TopLine Value="49"/>
+        <CursorPos X="27" Y="64"/>
+        <UsageCount Value="10"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="C:\usr\local\share\fpcsrc\rtl\wince\windows.pp"/>
+        <TopLine Value="23"/>
+        <CursorPos X="5" Y="38"/>
+        <UsageCount Value="12"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="C:\Downloads\CtrlTerm-Lazarus-122513\CtrlTerm.pas"/>
+        <TopLine Value="515"/>
+        <UsageCount Value="10"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="..\synalist-code-190-trunk\synaser.pas"/>
+        <TopLine Value="923"/>
+        <CursorPos X="54" Y="950"/>
+        <UsageCount Value="13"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="..\thtml\styleun.pas"/>
+        <UnitName Value="StyleUn"/>
+        <TopLine Value="91"/>
+        <CursorPos X="30" Y="106"/>
+        <UsageCount Value="10"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="speechsynthesizer.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="6"/>
+        <UsageCount Value="13"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="NSNotification.pas"/>
+        <TopLine Value="30"/>
+        <CursorPos X="20" Y="35"/>
+        <UsageCount Value="10"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="C:\usr\local\share\fpcsrc\rtl\objpas\sysutils\osutilsh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="28"/>
+        <CursorPos X="10" Y="39"/>
+        <UsageCount Value="11"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\sysutils\filutilh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="179"/>
+        <CursorPos X="11" Y="227"/>
+        <UsageCount Value="10"/>
+      </Unit28>
+    </Units>
+    <JumpHistory Count="14" HistoryIndex="13">
+      <Position1>
+        <Filename Value="scannerscreen.pas"/>
+        <Caret Line="476" Column="19" TopLine="457"/>
+      </Position1>
+      <Position2>
+        <Filename Value="scannerscreen.pas"/>
+        <Caret Line="479" TopLine="321"/>
+      </Position2>
+      <Position3>
+        <Filename Value="scannerscreen.pas"/>
+        <Caret Line="480" TopLine="419"/>
+      </Position3>
+      <Position4>
+        <Filename Value="scannerscreen.pas"/>
+        <Caret Line="481" TopLine="420"/>
+      </Position4>
+      <Position5>
+        <Filename Value="scannerscreen.pas"/>
+        <Caret Line="480" TopLine="419"/>
+      </Position5>
+      <Position6>
+        <Filename Value="scannerscreen.pas"/>
+        <Caret Line="479" TopLine="418"/>
+      </Position6>
+      <Position7>
+        <Filename Value="scannerscreen.pas"/>
+        <Caret Line="481" TopLine="420"/>
+      </Position7>
+      <Position8>
+        <Filename Value="scannerscreen.pas"/>
+        <Caret Line="5" Column="22"/>
+      </Position8>
+      <Position9>
+        <Filename Value="scannerscreen.pas"/>
+        <Caret Line="72" Column="24" TopLine="19"/>
+      </Position9>
+      <Position10>
+        <Filename Value="scannerscreen.pas"/>
+        <Caret Line="504" Column="5"/>
+      </Position10>
+      <Position11>
+        <Filename Value="scannerscreen.pas"/>
+        <Caret Line="14" Column="44"/>
+      </Position11>
+      <Position12>
+        <Filename Value="scannerscreen.pas"/>
+        <Caret Line="473" TopLine="444"/>
+      </Position12>
+      <Position13>
+        <Filename Value="scannerscreen.pas"/>
+        <Caret Line="344" Column="33" TopLine="314"/>
+      </Position13>
+      <Position14>
+        <Filename Value="scannerscreen.pas"/>
+        <Caret Line="363" Column="32" TopLine="333"/>
+      </Position14>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode="default"/>
+    </RunParams>
+  </ProjectSession>
+  <Debugging>
+    <BreakPoints>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="scannerscreen.pas"/>
+        <Line Value="472"/>
+      </Item>
+    </BreakPoints>
+  </Debugging>
+</CONFIG>
