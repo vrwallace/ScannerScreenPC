@@ -20,8 +20,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ScannerScreen"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="340"/>
-        <CursorPos X="129" Y="378"/>
+        <CursorPos X="66" Y="9"/>
         <UsageCount Value="90"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -200,7 +199,7 @@
         <UsageCount Value="10"/>
       </Unit28>
     </Units>
-    <JumpHistory Count="14" HistoryIndex="13">
+    <JumpHistory Count="15" HistoryIndex="14">
       <Position1>
         <Filename Value="scannerscreen.pas"/>
         <Caret Line="476" Column="19" TopLine="457"/>
@@ -257,6 +256,10 @@
         <Filename Value="scannerscreen.pas"/>
         <Caret Line="363" Column="32" TopLine="333"/>
       </Position14>
+      <Position15>
+        <Filename Value="scannerscreen.pas"/>
+        <Caret Line="9" Column="66"/>
+      </Position15>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
