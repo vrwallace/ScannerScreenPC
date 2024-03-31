@@ -284,7 +284,7 @@ begin
 
 
               try
-                logfilepath := PersonalPath + 'Scanner Screen Logs';
+                logfilepath := PersonalPath + '\Scanner Screen Logs';
                 if not directoryexists(logfilepath) then
                   forcedirectories(logfilepath);
                logfilepath :=
