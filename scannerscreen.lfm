@@ -4,7 +4,7 @@ object Form1: TForm1
   Top = 349
   Width = 1666
   Anchors = []
-  Caption = 'Scanner Screen - Version 2.643MAC  - By Von Wallace'
+  Caption = 'Scanner Screen - Version 2.644MAC  - By Von Wallace'
   ClientHeight = 898
   ClientWidth = 1666
   Color = clWhite
@@ -384,7 +384,6 @@ object Form1: TForm1
         Width = 192
         Caption = 'Window Stay on Top'
         TabOrder = 1
-        Visible = False
         OnChange = CheckBoxstayontopChange
       end
       object ColorBoxwindow: TColorBox
@@ -423,6 +422,14 @@ object Form1: TForm1
         Width = 84
         Caption = 'Font Color'
         ParentColor = False
+      end
+      object CheckBoxwindowflash: TCheckBox
+        Left = 256
+        Height = 29
+        Top = 90
+        Width = 136
+        Caption = 'Window Flash'
+        TabOrder = 4
       end
     end
   end

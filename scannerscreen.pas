@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, RTTICtrls, Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, ComCtrls, Menus, ColorBox, synaser, ComObj,
-  INIFiles, lclintf, Grids, codes2, shlobj;
+  INIFiles, lclintf, Grids, codes2, shlobj, Windows;
 
 type
 
@@ -16,6 +16,7 @@ type
   TForm1 = class(TForm)
     Buttonconnecttoscanner: TButton;
     Buttondisconnectfromscanner: TButton;
+    CheckBoxwindowflash: TCheckBox;
     CheckBoxlogdata: TCheckBox;
     CheckBoxtexttospeech: TCheckBox;
     CheckBoxstayontop: TCheckBox;
@@ -225,6 +226,9 @@ begin
 
         if glgs.Count > 7 then
         begin
+          if CheckBoxwindowflash.Checked = True then
+            flashwindow(form1.Handle, True);
+
           if comboboxscanner.Text = 'HP-1' then
           begin
             freq := trim(glgs.ValueFromIndex[2]);
@@ -305,9 +309,10 @@ begin
                   TimeFormat := GetTimeFormat;
                   AssignFile(FileLogfile, logfilepath);
                   rewrite(FileLogfile);
-                  writeln(FileLogfile, FormatDateTime(TimeFormat, now) + ' ' +
-                    FormatDateTime('dd mmm yyyy', now) + #9 + freq +
-                    #9 + modulation + #9 + systemname + #9 + departmentname + #9 + channelname);
+                  writeln(FileLogfile, FormatDateTime(TimeFormat, now) +
+                    ' ' + FormatDateTime('dd mmm yyyy', now) + #9 +
+                    freq + #9 + modulation + #9 + systemname + #9 +
+                    departmentname + #9 + channelname);
                   CloseFile(FileLogfile);
 
                 end
@@ -317,9 +322,10 @@ begin
                   TimeFormat := GetTimeFormat;
                   AssignFile(FileLogfile, logfilepath);
                   append(FileLogfile);
-                  writeln(FileLogfile, FormatDateTime(TimeFormat, now) + ' ' +
-                    FormatDateTime('dd mmm yyyy', now) + #9 + freq +
-                    #9 + modulation + #9 + systemname + #9 + departmentname + #9 + channelname);
+                  writeln(FileLogfile, FormatDateTime(TimeFormat, now) +
+                    ' ' + FormatDateTime('dd mmm yyyy', now) + #9 +
+                    freq + #9 + modulation + #9 + systemname + #9 +
+                    departmentname + #9 + channelname);
                   CloseFile(FileLogfile);
                 end;
               except
@@ -451,7 +457,7 @@ end;
 procedure TForm1.CheckBoxstayontopChange(Sender: TObject);
 begin
   if checkboxstayontop.Checked = True then
-    form1.FormStyle := fsStayOnTop
+    form1.FormStyle := fsSystemStayOnTop
   else
     form1.FormStyle := fsnormal;
 end;
@@ -650,6 +656,9 @@ begin
       ini.writeinteger('config', 'TTSRate', TrackBarRate.Position);
       ini.Writeinteger('config', 'FontHeight', TrackBarfontheight.Position);
       ini.Writebool('config', 'WindowOnTop', CheckBoxstayontop.Checked);
+      ini.Writebool('config', 'WindowFlash', CheckBoxwindowflash.Checked);
+
+
       ini.WriteString('config', 'WindowColor', ColorBoxwindow.Text);
       ini.WriteString('config', 'FontColor', ColorBoxfont.Text);
       ini.writeinteger('config', 'WindowHeight', form1.Height);
@@ -763,6 +772,13 @@ begin
             ini.ReadInteger('config', 'TTSRate', TrackBarRate.Position);
           TrackBarfontheight.Position :=
             ini.ReadInteger('config', 'FontHeight', TrackBarfontheight.Position);
+          CheckBoxstayontop.Checked :=
+            ini.readbool('config', 'WindowOnTop', CheckBoxstayontop.Checked);
+
+
+          CheckBoxwindowflash.Checked :=
+            ini.Readbool('config', 'WindowFlash', CheckBoxwindowflash.Checked);
+
 
           // CheckBoxstayontop.Checked :=
           //ini.readbool('config', 'WindowOnTop', CheckBoxstayontop.Checked);
