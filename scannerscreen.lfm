@@ -1,15 +1,14 @@
 object Form1: TForm1
-  Left = 1296
-  Height = 898
-  Top = 349
-  Width = 1666
+  Left = 501
+  Height = 609
+  Top = 319
+  Width = 1111
   Anchors = []
-  Caption = 'Scanner Screen - Version 2.644MAC  - By Von Wallace'
-  ClientHeight = 898
-  ClientWidth = 1666
+  Caption = 'Scanner Screen - Version 2.645MAC  - By Von Wallace'
+  ClientHeight = 609
+  ClientWidth = 1111
   Color = clWhite
   DefaultMonitor = dmPrimary
-  DesignTimePPI = 144
   Menu = MainMenu1
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -23,9 +22,9 @@ object Form1: TForm1
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = GroupBoxSettings
     Left = 0
-    Height = 593
-    Top = 55
-    Width = 1666
+    Height = 379
+    Top = 40
+    Width = 1111
     Anchors = [akTop, akLeft, akRight, akBottom]
     FixedCols = 0
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goDblClickAutoSize, goSmoothScroll]
@@ -41,15 +40,15 @@ object Form1: TForm1
     AnchorSideRight.Side = asrBottom
     Left = 0
     Height = 3
-    Top = 8
-    Width = 1666
+    Top = 5
+    Width = 1111
     Alignment = taCenter
     Anchors = [akTop, akLeft, akRight]
     AutoSize = True
-    BorderSpacing.Top = 8
+    BorderSpacing.Top = 5
     BorderStyle = sbsSunken
     Font.CharSet = ANSI_CHARSET
-    Font.Height = -120
+    Font.Height = -80
     Font.Name = 'Arial'
     Font.Pitch = fpVariable
     Font.Quality = fqDraft
@@ -65,14 +64,14 @@ object Form1: TForm1
     AnchorSideRight.Side = asrBottom
     Left = 0
     Height = 3
-    Top = 30
-    Width = 1666
+    Top = 21
+    Width = 1111
     Anchors = [akTop, akLeft, akRight]
     AutoSize = True
-    BorderSpacing.Top = 8
+    BorderSpacing.Top = 5
     BorderStyle = sbsSunken
     Font.CharSet = ANSI_CHARSET
-    Font.Height = -56
+    Font.Height = -37
     Font.Name = 'Arial Narrow'
     Font.Pitch = fpVariable
     Font.Quality = fqDraft
@@ -87,14 +86,14 @@ object Form1: TForm1
     AnchorSideRight.Side = asrBottom
     Left = 0
     Height = 3
-    Top = 41
-    Width = 1666
+    Top = 29
+    Width = 1111
     Anchors = [akTop, akLeft, akRight]
     AutoSize = True
-    BorderSpacing.Top = 8
+    BorderSpacing.Top = 5
     BorderStyle = sbsSunken
     Font.CharSet = ANSI_CHARSET
-    Font.Height = -56
+    Font.Height = -37
     Font.Name = 'Arial Narrow'
     Font.Pitch = fpVariable
     Font.Quality = fqDraft
@@ -109,14 +108,14 @@ object Form1: TForm1
     AnchorSideRight.Side = asrBottom
     Left = 0
     Height = 3
-    Top = 52
-    Width = 1666
+    Top = 37
+    Width = 1111
     Anchors = [akTop, akLeft, akRight]
     AutoSize = True
-    BorderSpacing.Top = 8
+    BorderSpacing.Top = 5
     BorderStyle = sbsSunken
     Font.CharSet = ANSI_CHARSET
-    Font.Height = -56
+    Font.Height = -37
     Font.Name = 'Arial Narrow'
     Font.Pitch = fpVariable
     Font.Quality = fqDraft
@@ -131,14 +130,14 @@ object Form1: TForm1
     AnchorSideRight.Side = asrBottom
     Left = 0
     Height = 3
-    Top = 19
-    Width = 1666
+    Top = 13
+    Width = 1111
     Anchors = [akTop, akLeft, akRight]
     AutoSize = True
-    BorderSpacing.Top = 8
+    BorderSpacing.Top = 5
     BorderStyle = sbsSunken
     Font.CharSet = ANSI_CHARSET
-    Font.Height = -56
+    Font.Height = -37
     Font.Name = 'Arial Narrow'
     Font.Pitch = fpVariable
     Font.Quality = fqDraft
@@ -154,37 +153,37 @@ object Form1: TForm1
     AnchorSideBottom.Control = Owner
     AnchorSideBottom.Side = asrBottom
     Left = 0
-    Height = 242
-    Top = 656
-    Width = 1666
+    Height = 185
+    Top = 424
+    Width = 1111
     Anchors = [akLeft, akRight, akBottom]
     AutoSize = True
-    BorderSpacing.Top = 8
-    ClientHeight = 212
-    ClientWidth = 1662
+    BorderSpacing.Top = 5
+    ClientHeight = 165
+    ClientWidth = 1107
     Color = clWhite
     ParentBackground = False
     ParentColor = False
     TabOrder = 5
     object GroupBox2: TGroupBox
-      Left = 390
-      Height = 212
+      Left = 260
+      Height = 165
       Top = 0
-      Width = 348
+      Width = 232
       Caption = 'Raw Data'
-      ClientHeight = 182
-      ClientWidth = 344
+      ClientHeight = 145
+      ClientWidth = 228
       Color = clWhite
       ParentBackground = False
       ParentColor = False
       TabOrder = 0
       object Memo1: TMemo
-        Left = 9
-        Height = 80
-        Top = 4
-        Width = 322
+        Left = 6
+        Height = 53
+        Top = 3
+        Width = 215
         Font.CharSet = ANSI_CHARSET
-        Font.Height = -20
+        Font.Height = -13
         Font.Name = 'Arial Narrow'
         Font.Pitch = fpVariable
         Font.Quality = fqDraft
@@ -193,122 +192,140 @@ object Form1: TForm1
         TabOrder = 0
       end
       object CheckBoxlogdata: TCheckBox
-        Left = 9
-        Height = 29
-        Top = 90
-        Width = 97
+        Left = 6
+        Height = 19
+        Top = 60
+        Width = 65
         Caption = 'Log Data'
         TabOrder = 1
+        OnChange = CheckBoxlogdataChange
       end
       object Label7: TLabel
-        Left = 126
-        Height = 25
-        Top = 92
-        Width = 173
-        Caption = '(Saved in Documents)'
+        Left = 8
+        Height = 15
+        Top = 112
+        Width = 113
+        Caption = '(Select Log Directory)'
         ParentColor = False
+      end
+      object Editlogdir: TEdit
+        Left = 8
+        Height = 23
+        Top = 84
+        Width = 213
+        ReadOnly = True
+        TabOrder = 2
+      end
+      object Button1: TButton
+        Left = 146
+        Height = 25
+        Top = 112
+        Width = 75
+        Caption = 'Select'
+        TabOrder = 3
+        OnClick = Button1Click
       end
     end
     object GroupBox3: TGroupBox
-      Left = 1290
-      Height = 212
+      Left = 860
+      Height = 165
       Top = 0
-      Width = 360
+      Width = 240
       Caption = 'Text to Speech'
-      ClientHeight = 182
-      ClientWidth = 356
+      ClientHeight = 145
+      ClientWidth = 236
       Color = clWhite
       ParentBackground = False
       ParentColor = False
       TabOrder = 1
       object TrackBarRate: TTrackBar
-        Left = 69
-        Height = 38
-        Top = 48
-        Width = 204
+        Left = 46
+        Height = 25
+        Top = 32
+        Width = 136
         Max = 220
         OnChange = TrackBarRateChange
         Position = 0
         TabOrder = 0
       end
       object Label2: TLabel
-        Left = 21
-        Height = 25
-        Top = 48
-        Width = 35
+        Left = 14
+        Height = 15
+        Top = 32
+        Width = 23
         Caption = 'Rate'
         ParentColor = False
       end
       object LabelRate: TLabel
-        Left = 285
-        Height = 25
-        Top = 48
-        Width = 20
+        Left = 190
+        Height = 15
+        Top = 32
+        Width = 14
         Caption = '(0)'
         ParentColor = False
       end
       object Label3: TLabel
-        Left = 24
-        Height = 25
-        Top = 100
-        Width = 218
+        Left = 16
+        Height = 15
+        Top = 67
+        Width = 145
         Caption = '(0 = Normal rate of speech)'
         ParentColor = False
       end
       object CheckBoxtexttospeech: TCheckBox
-        Left = 21
-        Height = 29
-        Top = 12
-        Width = 198
+        Left = 14
+        Height = 19
+        Top = 8
+        Width = 133
         Caption = 'Enable Text to Speech'
         TabOrder = 1
       end
     end
     object GroupBox4: TGroupBox
       Left = 0
-      Height = 212
+      Height = 165
       Top = 0
-      Width = 378
+      Width = 252
       Caption = 'Communications'
-      ClientHeight = 182
-      ClientWidth = 374
+      ClientHeight = 145
+      ClientWidth = 248
       Color = clWhite
       ParentBackground = False
       ParentColor = False
       TabOrder = 2
       object Label1: TLabel
-        Left = 9
-        Height = 25
-        Top = 12
-        Width = 52
+        Left = 6
+        Height = 15
+        Top = 8
+        Width = 35
         Caption = 'Device'
         ParentColor = False
       end
       object Buttonconnecttoscanner: TButton
-        Left = 9
-        Height = 38
-        Top = 88
-        Width = 246
+        Left = 6
+        Height = 25
+        Top = 59
+        Width = 164
         Caption = 'Connect to Scanner'
         TabOrder = 0
         OnClick = ButtonconnecttoscannerClick
       end
       object Buttondisconnectfromscanner: TButton
-        Left = 9
-        Height = 38
-        Top = 126
-        Width = 246
+        Left = 6
+        Height = 25
+        Top = 84
+        Width = 164
         Caption = 'Disconnect from Scanner'
         Enabled = False
         TabOrder = 1
         OnClick = ButtondisconnectfromscannerClick
       end
       object ComboBoxcomport: TComboBox
-        Left = 96
-        Height = 33
-        Top = 12
-        Width = 252
-        ItemHeight = 25
+        Left = 64
+        Height = 23
+        Top = 8
+        Width = 168
+        ItemHeight = 15
         ParentBidiMode = False
         ParentShowHint = False
         ShowHint = True
@@ -317,19 +334,19 @@ object Form1: TForm1
         OnDropDown = ComboBoxcomportDropDown
       end
       object Label8: TLabel
-        Left = 9
-        Height = 25
-        Top = 52
-        Width = 62
+        Left = 6
+        Height = 15
+        Top = 35
+        Width = 42
         Caption = 'Scanner'
         ParentColor = False
       end
       object ComboBoxScanner: TComboBox
-        Left = 96
-        Height = 33
-        Top = 51
-        Width = 252
-        ItemHeight = 25
+        Left = 64
+        Height = 23
+        Top = 34
+        Width = 168
+        ItemHeight = 15
         Items.Strings = (
           '396/996/436/536'
           'HP-1'
@@ -339,22 +356,22 @@ object Form1: TForm1
       end
     end
     object GroupBox5: TGroupBox
-      Left = 750
-      Height = 212
+      Left = 500
+      Height = 165
       Top = 0
-      Width = 528
+      Width = 352
       Caption = 'Display'
-      ClientHeight = 182
-      ClientWidth = 524
+      ClientHeight = 145
+      ClientWidth = 348
       Color = clWhite
       ParentBackground = False
       ParentColor = False
       TabOrder = 3
       object TrackBarfontheight: TTrackBar
-        Left = 9
-        Height = 38
-        Top = 45
-        Width = 180
+        Left = 6
+        Height = 25
+        Top = 30
+        Width = 120
         Max = 190
         Min = 10
         OnChange = TrackBarfontheightChange
@@ -362,72 +379,72 @@ object Form1: TForm1
         TabOrder = 0
       end
       object Labelfontheight: TLabel
-        Left = 201
-        Height = 25
-        Top = 51
-        Width = 20
+        Left = 134
+        Height = 15
+        Top = 34
+        Width = 14
         Caption = '(0)'
         ParentColor = False
       end
       object Label4: TLabel
-        Left = 9
-        Height = 25
-        Top = 9
-        Width = 94
+        Left = 6
+        Height = 15
+        Top = 6
+        Width = 63
         Caption = 'Font Height'
         ParentColor = False
       end
       object CheckBoxstayontop: TCheckBox
-        Left = 21
-        Height = 29
-        Top = 92
-        Width = 192
+        Left = 14
+        Height = 19
+        Top = 61
+        Width = 127
         Caption = 'Window Stay on Top'
         TabOrder = 1
         OnChange = CheckBoxstayontopChange
       end
       object ColorBoxwindow: TColorBox
-        Left = 357
-        Height = 30
-        Top = 9
-        Width = 150
+        Left = 238
+        Height = 22
+        Top = 6
+        Width = 100
         DefaultColorColor = clWhite
         NoneColorColor = clWhite
         Selected = clWhite
-        ItemHeight = 24
+        ItemHeight = 16
         OnChange = ColorBoxwindowChange
         TabOrder = 2
       end
       object Label5: TLabel
-        Left = 225
-        Height = 25
-        Top = 9
-        Width = 114
+        Left = 150
+        Height = 15
+        Top = 6
+        Width = 76
         Caption = 'Window Color'
         ParentColor = False
       end
       object ColorBoxfont: TColorBox
-        Left = 357
-        Height = 30
-        Top = 54
-        Width = 150
-        ItemHeight = 24
+        Left = 238
+        Height = 22
+        Top = 36
+        Width = 100
+        ItemHeight = 16
         OnChange = ColorBoxfontChange
         TabOrder = 3
       end
       object Label6: TLabel
-        Left = 255
-        Height = 25
-        Top = 51
-        Width = 84
+        Left = 170
+        Height = 15
+        Top = 34
+        Width = 56
         Caption = 'Font Color'
         ParentColor = False
       end
       object CheckBoxwindowflash: TCheckBox
-        Left = 256
-        Height = 29
-        Top = 90
-        Width = 136
+        Left = 171
+        Height = 19
+        Top = 60
+        Width = 92
         Caption = 'Window Flash'
         TabOrder = 4
       end
@@ -437,17 +454,17 @@ object Form1: TForm1
     Enabled = False
     Interval = 500
     OnTimer = TimerprobescannerTimer
-    Left = 1044
-    Top = 432
+    Left = 696
+    Top = 288
   end
   object TimerClock: TTimer
     OnTimer = TimerClockTimer
-    Left = 348
-    Top = 600
+    Left = 232
+    Top = 400
   end
   object MainMenu1: TMainMenu
-    Left = 144
-    Top = 125
+    Left = 96
+    Top = 83
     object MenuItem4: TMenuItem
       Caption = 'View'
       object MenuItemRealTimeGrid: TMenuItem
@@ -496,11 +513,15 @@ object Form1: TForm1
     end
   end
   object PopupMenu1: TPopupMenu
-    Left = 644
-    Top = 311
+    Left = 429
+    Top = 207
     object MenuItemclearlog: TMenuItem
       Caption = 'Clear Log'
       OnClick = MenuItemclearlogClick
     end
+  end
+  object SelectDirectoryDialog1: TSelectDirectoryDialog
+    Left = 240
+    Top = 112
   end
 end

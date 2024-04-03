@@ -14,6 +14,7 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
+    Button1: TButton;
     Buttonconnecttoscanner: TButton;
     Buttondisconnectfromscanner: TButton;
     CheckBoxwindowflash: TCheckBox;
@@ -24,6 +25,7 @@ type
     ColorBoxfont: TColorBox;
     ComboBoxScanner: TComboBox;
     ComboBoxcomport: TComboBox;
+    Editlogdir: TEdit;
     GroupBoxSettings: TGroupBox;
     GroupBox2: TGroupBox;
     GroupBox3: TGroupBox;
@@ -54,6 +56,7 @@ type
     MenuItemDonate: TMenuItem;
     MenuItemSaveSettings: TMenuItem;
     PopupMenu1: TPopupMenu;
+    SelectDirectoryDialog1: TSelectDirectoryDialog;
     statictexttime: TStaticText;
     StaticTextsystemname: TStaticText;
     StaticTextdepartmentname: TStaticText;
@@ -65,8 +68,10 @@ type
     TrackBarfontheight: TTrackBar;
     TrackBarRate: TTrackBar;
 
+    procedure Button1Click(Sender: TObject);
     procedure ButtonconnecttoscannerClick(Sender: TObject);
     procedure ButtondisconnectfromscannerClick(Sender: TObject);
+    procedure CheckBoxlogdataChange(Sender: TObject);
     procedure CheckBoxstayontopChange(Sender: TObject);
     procedure ColorBoxwindowChange(Sender: TObject);
     procedure ColorBoxfontChange(Sender: TObject);
@@ -289,13 +294,15 @@ begin
             //write data start
             if checkboxlogdata.Checked then
             begin
-              PersonalPath := '';
-              SHGetSpecialFolderPath(0, PersonalPath, CSIDL_PERSONAL, False);
-
+              logfilepath := editlogdir.text;
+              if trim(logfilepath)='' then begin
+                checkboxlogdata.checked:=false;
+                exit;
+              end;
 
 
               try
-                logfilepath := PersonalPath + '\ScannerScreenLogs';
+
                 if not directoryexists(logfilepath) then
                   forcedirectories(logfilepath);
                 logfilepath :=
@@ -452,6 +459,17 @@ begin
   StaticTextdepartmentname.Caption := ' ';
   StaticTextchannelname.Caption := ' ';
   ser.closesocket;
+end;
+
+procedure TForm1.CheckBoxlogdataChange(Sender: TObject);
+begin
+  if (checkboxlogdata.checked) then begin
+  if not directoryexists(editlogdir.text) then begin
+    showmessage('Select Log Directory');
+    checkboxlogdata.checked:=false;
+    end;
+  end;
+
 end;
 
 procedure TForm1.CheckBoxstayontopChange(Sender: TObject);
@@ -651,6 +669,8 @@ begin
         stringreplace(comboboxscanner.Text, '/', '_', [rfReplaceAll]) + '.ini');
       ini.WriteString('config', 'comport', comboboxcomport.Text);
       ini.WriteString('config', 'Scanner', comboboxscanner.Text);
+      ini.WriteString('config', 'logdir', editlogdir.text);
+
 
       ini.Writebool('config', 'TTSEnable', CheckBoxtexttospeech.Checked);
       ini.writeinteger('config', 'TTSRate', TrackBarRate.Position);
@@ -726,6 +746,7 @@ procedure TForm1.ButtonconnecttoscannerClick(Sender: TObject);
 var
   INI: TINIFile;
   converteddevicename: string;
+  PersonalPath: array[0..MaxPathLen] of char;
 begin
   try
     if ComboBoxcomport.ItemIndex = -1 then
@@ -786,6 +807,11 @@ begin
           ColorBoxwindow.Text :=
             ini.ReadString('config', 'WindowColor', ColorBoxwindow.Text);
           form1.color := ColorBoxwindow.Selected;
+
+           PersonalPath := '';
+             SHGetSpecialFolderPath(0, PersonalPath, CSIDL_PERSONAL, False);
+          editlogdir.text :=ini.ReadString('config', 'logdir', personalpath+'\scannerscreenlog');
+
           StringGridRealTimeGrid.color := ColorBoxwindow.Selected;
 
           ColorBoxfont.Text :=
@@ -863,6 +889,39 @@ begin
     end;
   end;
 end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+
+
+
+var
+  SelectDirectoryDialog: TSelectDirectoryDialog;
+  SelectedDir: string;
+
+begin
+  SelectDirectoryDialog := TSelectDirectoryDialog.Create(nil);
+  try
+    SelectDirectoryDialog.Title := 'Select a directory';
+    SelectDirectoryDialog.Options := [ofEnableSizing, ofViewDetail];
+
+    if SelectDirectoryDialog.Execute then
+    begin
+      SelectedDir := SelectDirectoryDialog.FileName;
+      editlogdir.text:=SelectedDir;
+      //WriteLn('Selected directory: ', SelectedDir);
+    end
+    else
+    begin
+      //WriteLn('No directory selected.');
+    end;
+  finally
+    SelectDirectoryDialog.Free;
+  end;
+
+  //ReadLn; // Wait for user input before closing the console
+end;
+
+
 
 procedure TForm1.DumpExceptionCallStack(E: Exception);
 var
