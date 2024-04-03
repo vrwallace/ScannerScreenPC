@@ -8,10 +8,9 @@
       <Unit0>
         <Filename Value="project1.lpr"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <CursorPos Y="22"/>
-        <UsageCount Value="90"/>
+        <UsageCount Value="93"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
@@ -21,9 +20,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ScannerScreen"/>
-        <TopLine Value="293"/>
-        <CursorPos X="148" Y="316"/>
-        <UsageCount Value="90"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="59"/>
+        <CursorPos X="5" Y="85"/>
+        <UsageCount Value="93"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -35,7 +35,7 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="3" Y="9"/>
-        <UsageCount Value="27"/>
+        <UsageCount Value="30"/>
       </Unit2>
       <Unit3>
         <Filename Value="unitrealtimegrid.pas"/>
@@ -205,129 +205,130 @@
         <EditorIndex Value="2"/>
         <TopLine Value="10"/>
         <CursorPos X="10" Y="44"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="11"/>
         <Loaded Value="True"/>
       </Unit29>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="445" Column="3" TopLine="443"/>
+        <Caret Line="877" Column="39" TopLine="845"/>
       </Position1>
       <Position2>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="677" Column="57" TopLine="624"/>
+        <Caret Line="94" Column="24" TopLine="65"/>
       </Position2>
       <Position3>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="817" Column="26" TopLine="764"/>
+        <Caret Line="91" Column="66" TopLine="56"/>
       </Position3>
       <Position4>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="818" Column="62" TopLine="765"/>
+        <Caret Line="921" Column="5" TopLine="877"/>
       </Position4>
       <Position5>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="19" Column="20"/>
+        <Caret Line="611" Column="3" TopLine="609"/>
       </Position5>
       <Position6>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="258" Column="69" TopLine="133"/>
+        <Caret Line="702" Column="3" TopLine="700"/>
       </Position6>
       <Position7>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="337" Column="21" TopLine="284"/>
+        <Caret Line="720" Column="34" TopLine="700"/>
       </Position7>
       <Position8>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="356" Column="33" TopLine="303"/>
+        <Caret Line="865" Column="104" TopLine="859"/>
       </Position8>
       <Position9>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="367" Column="33" TopLine="314"/>
+        <Caret Line="54" Column="17" TopLine="28"/>
       </Position9>
       <Position10>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="612" Column="19" TopLine="610"/>
+        <Caret Line="81" Column="27" TopLine="36"/>
       </Position10>
       <Position11>
-        <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\sysutils\osutilsh.inc"/>
+        <Filename Value="scannerscreen.pas"/>
+        <Caret Line="123" Column="7" TopLine="77"/>
       </Position11>
       <Position12>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="642" Column="42" TopLine="610"/>
+        <Caret Line="343" Column="21" TopLine="322"/>
       </Position12>
       <Position13>
-        <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\sysutils\osutilsh.inc"/>
-        <Caret Line="44" Column="10" TopLine="10"/>
+        <Filename Value="scannerscreen.pas"/>
+        <Caret Line="362" Column="33" TopLine="334"/>
       </Position13>
       <Position14>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="642" Column="42" TopLine="610"/>
+        <Caret Line="373" Column="33" TopLine="349"/>
       </Position14>
       <Position15>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="645" Column="74" TopLine="610"/>
+        <Caret Line="669" Column="5" TopLine="645"/>
       </Position15>
       <Position16>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="619" Column="3" TopLine="588"/>
+        <Caret Line="691" Column="121" TopLine="646"/>
       </Position16>
       <Position17>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="599" Column="72" TopLine="588"/>
+        <Caret Line="811" Column="73" TopLine="782"/>
       </Position17>
       <Position18>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="619" Column="3" TopLine="588"/>
+        <Caret Line="668" Column="48" TopLine="642"/>
       </Position18>
       <Position19>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="605" Column="53" TopLine="627"/>
+        <Caret Line="811" Column="77" TopLine="772"/>
       </Position19>
       <Position20>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="677" Column="53" TopLine="632"/>
+        <Caret Line="668" Column="48" TopLine="642"/>
       </Position20>
       <Position21>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="817" Column="22" TopLine="772"/>
+        <Caret Line="811" Column="77" TopLine="781"/>
       </Position21>
       <Position22>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="818" Column="58" TopLine="773"/>
+        <Caret Line="725" Column="5" TopLine="722"/>
       </Position22>
       <Position23>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="8" Column="67"/>
+        <Caret Line="294" Column="63" TopLine="275"/>
       </Position23>
       <Position24>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="19" Column="16"/>
+        <Caret Line="872" Column="49" TopLine="855"/>
       </Position24>
       <Position25>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="46" Column="21"/>
+        <Caret Line="125" Column="14" TopLine="98"/>
       </Position25>
       <Position26>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="76" Column="31" TopLine="31"/>
+        <Caret Line="127" Column="10" TopLine="98"/>
       </Position26>
       <Position27>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="119" Column="10" TopLine="73"/>
+        <Caret Line="304" Column="108" TopLine="288"/>
       </Position27>
       <Position28>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="121" Column="6" TopLine="75"/>
+        <Caret Line="196" TopLine="169"/>
       </Position28>
       <Position29>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="279" Column="27" TopLine="240"/>
+        <Caret Line="714" TopLine="689"/>
       </Position29>
       <Position30>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="316" Column="148" TopLine="293"/>
+        <Caret Line="912" Column="3" TopLine="884"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -342,7 +343,7 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="scannerscreen.pas"/>
-        <Line Value="472"/>
+        <Line Value="480"/>
       </Item>
     </BreakPoints>
   </Debugging>

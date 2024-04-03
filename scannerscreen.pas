@@ -5,9 +5,9 @@ unit ScannerScreen;
 interface
 
 uses
-  Classes, SysUtils,  RTTICtrls, Forms, Controls, Graphics, Dialogs,
+  Classes, SysUtils, RTTICtrls, Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, ComCtrls, Menus, ColorBox, synaser, ComObj,
-  INIFiles, lclintf, Grids, codes2,shlobj;
+  INIFiles, lclintf, Grids, codes2, shlobj;
 
 type
 
@@ -43,6 +43,7 @@ type
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
+    MilitaryTimemenu: TMenuItem;
     MenuItemclearlog: TMenuItem;
     MenuItemSettingsPanel: TMenuItem;
     MenuItemcodes: TMenuItem;
@@ -81,14 +82,19 @@ type
     procedure MenuItemSettingsPanelClick(Sender: TObject);
     procedure MenuItemShowSettingsClick(Sender: TObject);
     procedure MenuItemHideSettingsClick(Sender: TObject);
+
     procedure TimerprobescannerTimer(Sender: TObject);
     procedure DumpExceptionCallStack(E: Exception);
     procedure TimerClockTimer(Sender: TObject);
     procedure TrackBarfontheightChange(Sender: TObject);
     procedure TrackBarRateChange(Sender: TObject);
     function checksum(s: string): integer;
+    function RemoveLeadingZeros(const Frequency: string): string;
+    function GetTimeFormat: string;
   private
     { private declarations }
+    StartTime: TDateTime;
+    EndTime: TDateTime;
   public
     { public declarations }
     ser: TBlockSerial;
@@ -107,9 +113,8 @@ implementation
 
 
 procedure TForm1.TimerprobescannerTimer(Sender: TObject);
-
 var
-
+  Duration: TDateTime;
   rawmessage, modulation, systemname, departmentname, channelname, freq: string;
   glgs: TStringList;
   SpVoice: variant;
@@ -121,7 +126,7 @@ var
   logfilepath: string;
   RTGstring: string;
   cmd: string;
-
+  TimeFormat: string;
 begin
   if comboboxscanner.Text = 'HP-1' then
   begin
@@ -187,7 +192,7 @@ begin
         exit;
       end;
     finally
-     // ser.Free;
+      // ser.Free;
 
     end;
 
@@ -245,6 +250,7 @@ begin
             (StaticTextsystemname.Caption <> systemname) or
             (StaticTextFreq.Caption <> freq + ' (' + modulation + ')')) then
           begin
+            StartTime := Now;
             StaticTextFreq.Caption := freq + ' (' + modulation + ')';
             StaticTextsystemname.Caption := systemname;
             StaticTextdepartmentname.Caption := departmentname;
@@ -258,10 +264,11 @@ begin
                   StringGridRealTimeGrid.DeleteRow
                   (StringGridRealTimeGrid.RowCount - 1);
                 end;
-                rtgstring := trim(FormatDateTime('h:nn:ss AM/PM', now) +
-                  ' ' + FormatDateTime('MM/DD/YYYY', now)) + #13#10 +
-                  freq + #13#10 + modulation + #13#10 + systemname +
-                  #13#10 + departmentname + #13#10 + channelname;
+                TimeFormat := GetTimeFormat;
+                rtgstring := FormatDateTime(TimeFormat, now) + ' ' +
+                  FormatDateTime('dd mmm yyyy', now) + #13#10 + freq +
+                  #13#10 + modulation + #13#10 + systemname + #13#10 +
+                  departmentname + #13#10 + channelname;
 
 
                 StringGridRealTimeGrid.InsertColRow(False, 1);
@@ -278,16 +285,16 @@ begin
             //write data start
             if checkboxlogdata.Checked then
             begin
-               PersonalPath := '';
+              PersonalPath := '';
               SHGetSpecialFolderPath(0, PersonalPath, CSIDL_PERSONAL, False);
 
 
 
               try
-                logfilepath := PersonalPath + '\Scanner Screen Logs';
+                logfilepath := PersonalPath + '\ScannerScreenLogs';
                 if not directoryexists(logfilepath) then
                   forcedirectories(logfilepath);
-               logfilepath :=
+                logfilepath :=
                   logfilepath + '\SS' + trim(FormatDateTime('YYYYMMDD', NOW)) + '.TXT';
 
 
@@ -295,32 +302,32 @@ begin
                 if not fileexists(logfilepath) then
                 begin
 
+                  TimeFormat := GetTimeFormat;
                   AssignFile(FileLogfile, logfilepath);
                   rewrite(FileLogfile);
-                  writeln(FileLogfile, 'TIME DATE' + #9 + 'FREQ/TGID' +
-                    #9 + 'MODULATION' + #9 + 'SYSTEM' + #9 + 'DEPARTMENT' +
-                    #9 + 'CHANNEL');
+                  writeln(FileLogfile, FormatDateTime(TimeFormat, now) + ' ' +
+                    FormatDateTime('dd mmm yyyy', now) + #9 + freq +
+                    #9 + modulation + #9 + systemname + #9 + departmentname + #9 + channelname);
                   CloseFile(FileLogfile);
 
+                end
+                else
+                begin
+
+                  TimeFormat := GetTimeFormat;
+                  AssignFile(FileLogfile, logfilepath);
+                  append(FileLogfile);
+                  writeln(FileLogfile, FormatDateTime(TimeFormat, now) + ' ' +
+                    FormatDateTime('dd mmm yyyy', now) + #9 + freq +
+                    #9 + modulation + #9 + systemname + #9 + departmentname + #9 + channelname);
+                  CloseFile(FileLogfile);
                 end;
-
-
-
-                AssignFile(FileLogfile, logfilepath);
-
-                Append(FileLogfile);
-                writeln(FileLogfile, trim(FormatDateTime('h:nn:ss AM/PM', now) +
-                  ' ' + FormatDateTime('MM/DD/YYYY', now)) + #9 +
-                  freq + #9 + modulation + #9 + systemname + #9 +
-                  departmentname + #9 + channelname);
-                CloseFile(FileLogfile);
-
               except
                 on E: EInOutError do
                 begin
                   checkboxlogdata.Checked := False;
                   ShowMessage('File handling error occurred, logging will be disabled. Details: '
-                    + E.ClassName + '/' + E.Message);
+                    + E.ClassName + '/' + E.Message + ' (' + logfilepath + ')');
 
                 end;
               end;
@@ -347,8 +354,8 @@ begin
                     READTEXT := WideString(DEPARTMENTNAME + ' ' + channelname);
                 end
                 else
-                  READTEXT := WideString(freq + ' ' + modulation +
-                    ' ' + systemname);
+                  READTEXT := WideString(RemoveLeadingZeros(freq) +
+                    ' ' + modulation + ' ' + systemname);
 
 
 
@@ -369,10 +376,12 @@ begin
               finally
                 spvoice := nil;
               end;
-              end;
+            end;
             //mac speech end
 
           end;
+          EndTime := Now;
+          Duration := EndTime - StartTime;
         end
         else
         begin
@@ -387,7 +396,6 @@ begin
       finally
         glgs.Free;
       end;
-
 
     end
     else
@@ -470,14 +478,11 @@ end;
 
 
 procedure TForm1.ComboBoxcomportDropDown(Sender: TObject);
-
-
-
 begin
   comboboxcomport.Clear;
 
- comboboxcomport.Items.CommaText:= GetSerialPortNames();
- end;
+  comboboxcomport.Items.CommaText := GetSerialPortNames();
+end;
 
 
 
@@ -496,7 +501,8 @@ begin
     on E: Exception do
     begin
       CanClose := False;
-      MessageDlg('An error occurred while closing the application. Please try again.', mtError, [mbOK], 0);
+      MessageDlg('An error occurred while closing the application. Please try again.',
+        mtError, [mbOK], 0);
       // Log the exception details to a file or a centralized logging system
       // Example: LogException(E);
     end;
@@ -507,16 +513,9 @@ end;
 
 
 procedure TForm1.FormCreate(Sender: TObject);
-
 var
   c: TGRIDColumn;
-
 begin
-
-
-
-
-
 
   // add a custom column a grid
 
@@ -560,7 +559,7 @@ end;
 
 procedure TForm1.MenuItem3Click(Sender: TObject);
 begin
-    OpenURL('https://vonwallace.com');
+  OpenURL('https://vonwallace.com');
 end;
 
 
@@ -657,6 +656,9 @@ begin
       ini.writeinteger('config', 'WindowWidth', form1.Width);
       ini.Writebool('config', 'SettingsShow', GroupBoxSettings.Visible);
       ini.Writebool('config', 'RealTimeGridShow', StringGridRealTimeGrid.Visible);
+      ini.Writebool('config', 'MilitaryTimeShow', MilitaryTimemenu.Checked);
+
+
 
       ini.Writeinteger('config', 'RealTimeGridcol_0',
         StringGridRealTimeGrid.ColWidths[0]);
@@ -708,6 +710,8 @@ procedure TForm1.MenuItemHideSettingsClick(Sender: TObject);
 begin
   groupboxsettings.Visible := False;
 end;
+
+
 
 procedure TForm1.ButtonconnecttoscannerClick(Sender: TObject);
 var
@@ -792,6 +796,9 @@ begin
             ini.readbool('config', 'RealTimeGridShow', StringGridRealTimeGrid.Visible);
           MenuItemRealTimeGrid.Checked :=
             ini.readbool('config', 'RealTimeGridShow', StringGridRealTimeGrid.Visible);
+          MilitaryTimemenu.Checked :=
+            ini.readbool('config', 'MilitaryTimeshow', MilitaryTimemenu.Checked);
+
 
           StringGridRealTimeGrid.ColWidths[0] :=
             ini.readinteger('config', 'RealTimeGridcol_0',
@@ -864,15 +871,14 @@ begin
 end;
 
 procedure TForm1.TimerClockTimer(Sender: TObject);
-
 var
   ThisMoment: TDateTime;
-
+  TimeFormat: string;
 begin
   ThisMoment := Now;
-  statictexttime.Caption := trim(FormatDateTime('h:nn:ss AM/PM', ThisMoment) +
-    ' ' + FormatDateTime('MM/DD/YYYY', ThisMoment));
-
+  TimeFormat := GetTimeFormat;
+  statictexttime.Caption := FormatDateTime(TimeFormat, ThisMoment) +
+    ' ' + FormatDateTime('dd mmm yyyy', ThisMoment);
 end;
 
 procedure TForm1.TrackBarfontheightChange(Sender: TObject);
@@ -906,5 +912,26 @@ begin
   checksum := sum;
 
 end;
+
+function TForm1.RemoveLeadingZeros(const Frequency: string): string;
+var
+  i: integer;
+begin
+  i := 1;
+  while (i <= Length(Frequency)) and (Frequency[i] = '0') do
+    Inc(i);
+  Result := Copy(Frequency, i, Length(Frequency) - i + 1);
+  if Result = '' then
+    Result := '0';
+end;
+
+function TForm1.GetTimeFormat: string;
+begin
+  if MilitaryTimemenu.Checked then
+    Result := 'HH:nn:ss'
+  else
+    Result := 'h:nn:ss AM/PM';
+end;
+
 
 end.
