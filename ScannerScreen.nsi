@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Scanner Screen"
-!define PRODUCT_VERSION "2.644"
+!define PRODUCT_VERSION "2.646"
 !define PRODUCT_PUBLISHER "Von Wallace"
 !define PRODUCT_WEB_SITE "http://vonwallace.com"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\ScannerScreen.exe"
@@ -11,6 +11,7 @@
 
 ; MUI 1.67 compatible ------
 !include "MUI.nsh"
+RequestExecutionLevel admin
 
 ; MUI Settings
 !define MUI_ABORTWARNING
@@ -26,7 +27,12 @@
 ; Instfiles page
 !insertmacro MUI_PAGE_INSTFILES
 ; Finish page
-!define MUI_FINISHPAGE_RUN "$INSTDIR\ScannerScreen.exe"
+!define MUI_FINISHPAGE_RUN
+!define MUI_FINISHPAGE_RUN_FUNCTION RunProgram
+Function RunProgram
+  ShellExecAsUser::ShellExecAsUser "open" '"$INSTDIR\ScannerScreen.exe"'
+FunctionEnd
+
 !insertmacro MUI_PAGE_FINISH
 
 ; Uninstaller pages
@@ -48,6 +54,7 @@ Section "MainSection" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
   File "ScannerScreen.exe"
+  SetShellVarContext all
   CreateDirectory "$SMPROGRAMS\Scanner Screen"
   CreateShortCut "$SMPROGRAMS\Scanner Screen\Scanner Screen.lnk" "$INSTDIR\ScannerScreen.exe"
   CreateShortCut "$DESKTOP\Scanner Screen.lnk" "$INSTDIR\ScannerScreen.exe"
@@ -82,6 +89,7 @@ Function un.onInit
 FunctionEnd
 
 Section Uninstall
+SetShellVarContext all
   Delete "$INSTDIR\${PRODUCT_NAME}.url"
   Delete "$INSTDIR\uninst.exe"
   Delete "$INSTDIR\ScannerScreen.exe"

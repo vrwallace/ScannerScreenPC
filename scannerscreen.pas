@@ -128,13 +128,13 @@ var
 
   SavedCW: word;
   FileLogfile: Textfile;
-  PersonalPath: array[0..MaxPathLen] of char; //Allocate memory
-  logfilepath: string;
+  //PersonalPath: array[0..MaxPathLen] of char; //Allocate memory
+  logfilepath,logfiledir: string;
   RTGstring: string;
   cmd: string;
   TimeFormat: string;
 begin
-  if comboboxscanner.Text = 'HP-1' then
+  if comboboxscanner.Text = 'HP-#' then
   begin
     cmd := 'RMT' + #9 + 'STATUS' + #9;
     cmd := cmd + IntToStr(checksum(cmd)) + #13#10;
@@ -145,15 +145,6 @@ begin
   try
     try
 
-      //ser := TBlockSerial.Create;
-
-      //ser.ConvertLineEnd := True;
-
-      //ser.Connect(trim(comboboxcomport.Text));
-
-      ////ser.Connect('/dev/tty.usbmodem1421');
-
-      //ser.config(115200, 8, 'N', 0, False, False);
       ser.CanWrite(4000);
       ser.sendstring(cmd);
       if (ser.LastError <> 0) then
@@ -198,7 +189,6 @@ begin
         exit;
       end;
     finally
-      // ser.Free;
 
     end;
 
@@ -221,7 +211,7 @@ begin
       memo1.Lines.Add(rawmessage);
       try
         GLGS := TStringList.Create;
-        if comboboxscanner.Text = 'HP-1' then
+        if comboboxscanner.Text = 'HP-#' then
           glgs.Delimiter := #9
         else
           glgs.Delimiter := ',';
@@ -234,7 +224,7 @@ begin
           if CheckBoxwindowflash.Checked = True then
             flashwindow(form1.Handle, True);
 
-          if comboboxscanner.Text = 'HP-1' then
+          if comboboxscanner.Text = 'HP-#' then
           begin
             freq := trim(glgs.ValueFromIndex[2]);
             modulation := trim(glgs.ValueFromIndex[3]);
@@ -294,8 +284,8 @@ begin
             //write data start
             if checkboxlogdata.Checked then
             begin
-              logfilepath := editlogdir.text;
-              if trim(logfilepath)='' then begin
+              logfiledir := editlogdir.text;
+              if trim(logfiledir)='' then begin
                 checkboxlogdata.checked:=false;
                 exit;
               end;
@@ -303,10 +293,10 @@ begin
 
               try
 
-                if not directoryexists(logfilepath) then
-                  forcedirectories(logfilepath);
+                if not directoryexists(logfiledir) then
+                  forcedirectories(logfiledir);
                 logfilepath :=
-                  logfilepath + '\SS' + trim(FormatDateTime('YYYYMMDD', NOW)) + '.TXT';
+                  logfiledir + '\SS' + trim(FormatDateTime('YYYYMMDD', NOW)) + '.TXT';
 
 
 
