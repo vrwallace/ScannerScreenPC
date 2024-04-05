@@ -95,7 +95,7 @@ type
     procedure TrackBarfontheightChange(Sender: TObject);
     procedure TrackBarRateChange(Sender: TObject);
     function checksum(s: string): integer;
-    function RemoveLeadingZeros(const Frequency: string): string;
+    function RemoveLeadingAndTrailingZeros(const Frequency: string): string;
     function GetTimeFormat: string;
   private
     { private declarations }
@@ -226,7 +226,7 @@ begin
 
           if comboboxscanner.Text = 'HP-#' then
           begin
-            freq := trim(glgs.ValueFromIndex[2]);
+            freq := trim(RemoveLeadingAndTrailingZeros(glgs.ValueFromIndex[2]));
             modulation := trim(glgs.ValueFromIndex[3]);
             systemname := trim(glgs.ValueFromIndex[8]);
             departmentname := trim(glgs.ValueFromIndex[9]);
@@ -235,7 +235,8 @@ begin
           end
           else
           begin
-            freq := trim(glgs.ValueFromIndex[1]);
+             freq := trim(RemoveLeadingAndTrailingZeros(glgs.ValueFromIndex[1]));
+           //freq := trim(RemoveLeadingAndTrailingZeros('001.00314000'));
             modulation := trim(glgs.ValueFromIndex[2]);
             systemname := trim(glgs.ValueFromIndex[5]);
             departmentname := trim(glgs.ValueFromIndex[6]);
@@ -357,7 +358,7 @@ begin
                     READTEXT := WideString(DEPARTMENTNAME + ' ' + channelname);
                 end
                 else
-                  READTEXT := WideString(RemoveLeadingZeros(freq) +
+                  READTEXT := WideString(freq+
                     ' ' + modulation + ' ' + systemname);
 
 
@@ -978,14 +979,29 @@ begin
 
 end;
 
-function TForm1.RemoveLeadingZeros(const Frequency: string): string;
+function TForm1.RemoveLeadingAndTrailingZeros(const Frequency: string): string;
 var
-  i: integer;
+  i, j, DecimalPos: integer;
 begin
   i := 1;
   while (i <= Length(Frequency)) and (Frequency[i] = '0') do
     Inc(i);
-  Result := Copy(Frequency, i, Length(Frequency) - i + 1);
+
+  DecimalPos := Pos('.', Frequency);
+  if DecimalPos > 0 then
+  begin
+    j := Length(Frequency);
+    while (j > DecimalPos) and (Frequency[j] = '0') do
+      Dec(j);
+
+    if j = DecimalPos then
+      Result := Copy(Frequency, i, DecimalPos - i)
+    else
+      Result := Copy(Frequency, i, j - i + 1);
+  end
+  else
+    Result := Copy(Frequency, i, Length(Frequency) - i + 1);
+
   if Result = '' then
     Result := '0';
 end;
