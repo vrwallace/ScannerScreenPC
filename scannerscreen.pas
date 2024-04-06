@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, RTTICtrls, Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, ComCtrls, Menus, ColorBox, synaser, ComObj,
-  INIFiles, lclintf, Grids, codes2, shlobj, Windows;
+  INIFiles, lclintf, Grids, codes2, shlobj, Windows,  StrUtils;
 
 type
 
@@ -95,7 +95,8 @@ type
     procedure TrackBarfontheightChange(Sender: TObject);
     procedure TrackBarRateChange(Sender: TObject);
     function checksum(s: string): integer;
-    function RemoveLeadingAndTrailingZeros(const Frequency: string): string;
+
+  function RoundStringToThreeDecimals(InputString: string): string;
     function GetTimeFormat: string;
   private
     { private declarations }
@@ -226,7 +227,7 @@ begin
 
           if comboboxscanner.Text = 'HP-#' then
           begin
-            freq := trim(RemoveLeadingAndTrailingZeros(glgs.ValueFromIndex[2]));
+            freq := trim(RoundStringToThreeDecimals(glgs.ValueFromIndex[2]));
             modulation := trim(glgs.ValueFromIndex[3]);
             systemname := trim(glgs.ValueFromIndex[8]);
             departmentname := trim(glgs.ValueFromIndex[9]);
@@ -235,8 +236,8 @@ begin
           end
           else
           begin
-             freq := trim(RemoveLeadingAndTrailingZeros(glgs.ValueFromIndex[1]));
-           //freq := trim(RemoveLeadingAndTrailingZeros('001.00314000'));
+           freq := trim(RoundStringToThreeDecimals(glgs.ValueFromIndex[1]));
+           //freq := trim(RoundStringToThreeDecimals('001.0'));
             modulation := trim(glgs.ValueFromIndex[2]);
             systemname := trim(glgs.ValueFromIndex[5]);
             departmentname := trim(glgs.ValueFromIndex[6]);
@@ -978,33 +979,44 @@ begin
   checksum := sum;
 
 end;
-
-function TForm1.RemoveLeadingAndTrailingZeros(const Frequency: string): string;
+function tform1.RoundStringToThreeDecimals(InputString: string): string;
 var
-  i, j, DecimalPos: integer;
+  Number: Double;
+  Code: Integer;
 begin
-  i := 1;
-  while (i <= Length(Frequency)) and (Frequency[i] = '0') do
-    Inc(i);
-
-  DecimalPos := Pos('.', Frequency);
-  if DecimalPos > 0 then
+  // Check if the input string is a valid number
+  Val(InputString, Number, Code);
+  if Code <> 0 then
   begin
-    j := Length(Frequency);
-    while (j > DecimalPos) and (Frequency[j] = '0') do
-      Dec(j);
+    // If the string is not a valid number, return the original string and exit
+    Result := InputString;
+    Exit;
+  end;
 
-    if j = DecimalPos then
-      Result := Copy(Frequency, i, DecimalPos - i)
-    else
-      Result := Copy(Frequency, i, j - i + 1);
-  end
-  else
-    Result := Copy(Frequency, i, Length(Frequency) - i + 1);
+  // Check if the input string contains a dot
+  if Pos('.', InputString) = 0 then
+  begin
+    // If no dot is found, return the original string and exit
+    Result := InputString;
+    Exit;
+  end;
 
-  if Result = '' then
-    Result := '0';
+  // Round the number to three decimal places
+  Number := Round(Number * 1000) / 1000;
+
+
+  // Convert the rounded number back to a string
+  Result := FormatFloat('0.000', Number);
 end;
+
+
+
+
+
+
+
+
+
 
 function TForm1.GetTimeFormat: string;
 begin
