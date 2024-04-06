@@ -96,7 +96,7 @@ type
     procedure TrackBarRateChange(Sender: TObject);
     function checksum(s: string): integer;
 
-  function RoundStringToThreeDecimals(InputString: string): string;
+ function FormatDecimal(input: string): string;
     function GetTimeFormat: string;
   private
     { private declarations }
@@ -227,7 +227,7 @@ begin
 
           if comboboxscanner.Text = 'HP-#' then
           begin
-            freq := trim(RoundStringToThreeDecimals(glgs.ValueFromIndex[2]));
+            freq := trim(glgs.ValueFromIndex[2]);
             modulation := trim(glgs.ValueFromIndex[3]);
             systemname := trim(glgs.ValueFromIndex[8]);
             departmentname := trim(glgs.ValueFromIndex[9]);
@@ -236,8 +236,8 @@ begin
           end
           else
           begin
-           freq := trim(RoundStringToThreeDecimals(glgs.ValueFromIndex[1]));
-           //freq := trim(RoundStringToThreeDecimals('001.0'));
+           freq := trim(glgs.ValueFromIndex[1]);
+          //freq := trim(formatdecimal('001.0'));
             modulation := trim(glgs.ValueFromIndex[2]);
             systemname := trim(glgs.ValueFromIndex[5]);
             departmentname := trim(glgs.ValueFromIndex[6]);
@@ -883,35 +883,33 @@ begin
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
-
-
-
 var
   SelectDirectoryDialog: TSelectDirectoryDialog;
   SelectedDir: string;
-
+   PersonalPath: array[0..MaxPathLen] of char;
 begin
+
+  PersonalPath := '';
+             SHGetSpecialFolderPath(0, PersonalPath, CSIDL_PERSONAL, False);
+
   SelectDirectoryDialog := TSelectDirectoryDialog.Create(nil);
   try
     SelectDirectoryDialog.Title := 'Select a directory';
     SelectDirectoryDialog.Options := [ofEnableSizing, ofViewDetail];
 
+    // Set the initial directory
+    SelectDirectoryDialog.InitialDir := PersonalPath;
+
     if SelectDirectoryDialog.Execute then
     begin
       SelectedDir := SelectDirectoryDialog.FileName;
-      editlogdir.text:=SelectedDir;
-      //WriteLn('Selected directory: ', SelectedDir);
-    end
-    else
-    begin
-      //WriteLn('No directory selected.');
+      // ... rest of your code
     end;
   finally
     SelectDirectoryDialog.Free;
   end;
-
-  //ReadLn; // Wait for user input before closing the console
 end;
+
 
 
 
@@ -979,35 +977,54 @@ begin
   checksum := sum;
 
 end;
-function tform1.RoundStringToThreeDecimals(InputString: string): string;
+
+function tform1.FormatDecimal(input: string): string;
+
+
 var
-  Number: Double;
-  Code: Integer;
+  value: Extended;
+  code: Integer;
+  integerPart, decimalPart: string;
 begin
-  // Check if the input string is a valid number
-  Val(InputString, Number, Code);
-  if Code <> 0 then
+  // Check if the input string contains a decimal point
+  if Pos('.', input) = 0 then
   begin
-    // If the string is not a valid number, return the original string and exit
-    Result := InputString;
+    // If there's no decimal point, return the input string immediately
+    Result := input;
     Exit;
   end;
 
-  // Check if the input string contains a dot
-  if Pos('.', InputString) = 0 then
+  // Attempt to convert the input string to a floating-point number
+  Val(input, value, code);
+
+  // Check if conversion was successful
+  if code = 0 then
   begin
-    // If no dot is found, return the original string and exit
-    Result := InputString;
-    Exit;
+    // Split the input string into integer and decimal parts
+    integerPart := Copy(input, 1, Pos('.', input) - 1);
+    decimalPart := Copy(input, Pos('.', input) + 1, Length(input) - Pos('.', input));
+
+    // If the integer part has leading zeros, keep them
+    if Length(integerPart) > 1 then
+      integerPart := IntToStr(StrToInt(integerPart));
+
+    // Format the decimal part with three decimal places
+    decimalPart := FormatFloat('0.###', StrToFloat('0.' + decimalPart));
+
+    // Concatenate the integer and decimal parts
+    Result := integerPart + '.' + decimalPart;
+  end
+  else
+  begin
+    // If conversion failed, return the original string
+    Result := input;
   end;
-
-  // Round the number to three decimal places
-  Number := Round(Number * 1000) / 1000;
-
-
-  // Convert the rounded number back to a string
-  Result := FormatFloat('0.000', Number);
 end;
+
+
+
+
+
 
 
 
