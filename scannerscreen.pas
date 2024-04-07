@@ -236,8 +236,8 @@ begin
           end
           else
           begin
-           freq := trim(ProcessDecimalString(glgs.ValueFromIndex[1]));
-          //freq := trim(ProcessDecimalString('001.01007000'));
+          freq := trim(ProcessDecimalString(glgs.ValueFromIndex[1]));
+          //freq := trim(ProcessDecimalString('000.01007000'));
             modulation := trim(glgs.ValueFromIndex[2]);
             systemname := trim(glgs.ValueFromIndex[5]);
             departmentname := trim(glgs.ValueFromIndex[6]);
@@ -984,6 +984,8 @@ var
   integerPart, fractionalPart: string;
   i: integer;
 begin
+  inputString:=trim(inputstring);
+
   // Check if the input is a string
   if not (inputString <> '') then
   begin
@@ -1013,7 +1015,7 @@ begin
   integerPart := inttostr(strtoint(Copy(inputString, 1, Pos('.', inputString) - 1)));
   fractionalPart := Copy(inputString, Pos('.', inputString) + 1, Length(inputString));
 
-  // Check if the fractional part has more than 3 decimals
+
     // Remove trailing zeros
     i := Length(fractionalPart);
     while (i > 0) and (fractionalPart[i] = '0') do
