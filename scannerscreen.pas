@@ -758,6 +758,9 @@ begin
 
     ser.Connect(trim(comboboxcomport.Text));
 
+     ser.AtTimeout := 4000;
+     ser.InterPacketTimeout := false;
+
     ser.config(115200, 8, 'N', 0, False, False);
 
     if not directoryexists(getappconfigdir(False)) then
