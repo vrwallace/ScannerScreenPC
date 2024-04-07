@@ -100,8 +100,8 @@ type
     function GetTimeFormat: string;
   private
     { private declarations }
-    StartTime: TDateTime;
-    EndTime: TDateTime;
+   // StartTime: TDateTime;
+    //EndTime: TDateTime;
   public
     { public declarations }
     ser: TBlockSerial;
@@ -121,7 +121,7 @@ implementation
 
 procedure TForm1.TimerprobescannerTimer(Sender: TObject);
 var
-  Duration: TDateTime;
+ // Duration: TDateTime;
   rawmessage, modulation, systemname, departmentname, channelname, freq: string;
   glgs: TStringList;
   SpVoice: variant;
@@ -251,7 +251,7 @@ begin
             (StaticTextsystemname.Caption <> systemname) or
             (StaticTextFreq.Caption <> freq + ' (' + modulation + ')')) then
           begin
-            StartTime := Now;
+            //StartTime := Now;
             StaticTextFreq.Caption := freq + ' (' + modulation + ')';
             StaticTextsystemname.Caption := systemname;
             StaticTextdepartmentname.Caption := departmentname;
@@ -385,8 +385,8 @@ begin
             //mac speech end
 
           end;
-          EndTime := Now;
-          Duration := EndTime - StartTime;
+         // EndTime := Now;
+         // Duration := EndTime - StartTime;
         end
         else
         begin
@@ -903,7 +903,7 @@ begin
     if SelectDirectoryDialog.Execute then
     begin
       SelectedDir := SelectDirectoryDialog.FileName;
-      // ... rest of your code
+     Editlogdir.text:= SelectedDir;
     end;
   finally
     SelectDirectoryDialog.Free;
