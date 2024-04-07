@@ -96,7 +96,7 @@ type
     procedure TrackBarRateChange(Sender: TObject);
     function checksum(s: string): integer;
 
- function FormatDecimal(input: string): string;
+    function ProcessDecimalString(inputString: string): string;
     function GetTimeFormat: string;
   private
     { private declarations }
@@ -236,8 +236,8 @@ begin
           end
           else
           begin
-           freq := trim(glgs.ValueFromIndex[1]);
-          //freq := trim(formatdecimal('001.0'));
+           freq := trim(ProcessDecimalString(glgs.ValueFromIndex[1]));
+          //freq := trim(ProcessDecimalString('001.01007000'));
             modulation := trim(glgs.ValueFromIndex[2]);
             systemname := trim(glgs.ValueFromIndex[5]);
             departmentname := trim(glgs.ValueFromIndex[6]);
@@ -978,46 +978,69 @@ begin
 
 end;
 
-function tform1.FormatDecimal(input: string): string;
-
-
+function tform1.ProcessDecimalString(inputString: string): string;
 var
-  value: Extended;
-  code: Integer;
-  integerPart, decimalPart: string;
+  floatValue: real;
+  integerPart, fractionalPart: string;
+  i: integer;
 begin
-  // Check if the input string contains a decimal point
-  if Pos('.', input) = 0 then
+  // Check if the input is a string
+  if not (inputString <> '') then
   begin
-    // If there's no decimal point, return the input string immediately
-    Result := input;
+    Result := inputString;
     Exit;
   end;
 
-  // Attempt to convert the input string to a floating-point number
-  Val(input, value, code);
-
-  // Check if conversion was successful
-  if code = 0 then
+  // Check if the string contains a decimal
+  if Pos('.', inputString) = 0 then
   begin
-    // Split the input string into integer and decimal parts
-    integerPart := Copy(input, 1, Pos('.', input) - 1);
-    decimalPart := Copy(input, Pos('.', input) + 1, Length(input) - Pos('.', input));
+    Result := inputString;
+    Exit;
+  end;
 
-    // If the integer part has leading zeros, keep them
-    if Length(integerPart) > 1 then
-      integerPart := IntToStr(StrToInt(integerPart));
+  // Check if the string is a valid number
+  try
+    floatValue := StrToFloat(inputString);
+  except
+    begin
+      Result := inputString;
+      Exit;
+    end;
+  end;
 
-    // Format the decimal part with three decimal places
-    decimalPart := FormatFloat('0.###', StrToFloat('0.' + decimalPart));
+  // Check if the last decimal is zero
+  if not (inputString[Length(inputString)] = '0') then
+  begin
+    Result := inputString;
+    Exit;
+  end;
 
-    // Concatenate the integer and decimal parts
-    Result := integerPart + '.' + decimalPart;
+  // Split the string into integer and fractional parts
+  integerPart := inttostr(strtoint(Copy(inputString, 1, Pos('.', inputString) - 1)));
+  fractionalPart := Copy(inputString, Pos('.', inputString) + 1, Length(inputString));
+
+  // Check if the fractional part has more than 3 decimals
+  if Length(fractionalPart) > 3 then
+  begin
+    // Remove trailing zeros
+    i := Length(fractionalPart);
+    while (i > 0) and (fractionalPart[i] = '0') do
+      Dec(i);
+    fractionalPart := Copy(fractionalPart, 1, i);
+
+    // Add zeros to make it three decimals long if it's fewer than 3 decimals
+    while Length(fractionalPart) < 3 do
+      fractionalPart := fractionalPart + '0';
+
+    // Join the integer and fractional parts with the decimal point
+    Result := integerPart + '.' + fractionalPart;
   end
   else
   begin
-    // If conversion failed, return the original string
-    Result := input;
+    // Add zeros to make it three decimals long if it's fewer than 3 decimals
+    while Length(fractionalPart) < 3 do
+      fractionalPart := fractionalPart + '0';
+   Result := integerPart + '.' + fractionalPart;
   end;
 end;
 
