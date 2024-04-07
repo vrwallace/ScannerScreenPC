@@ -1008,20 +1008,12 @@ begin
     end;
   end;
 
-  // Check if the last decimal is zero
-  if not (inputString[Length(inputString)] = '0') then
-  begin
-    Result := inputString;
-    Exit;
-  end;
 
   // Split the string into integer and fractional parts
   integerPart := inttostr(strtoint(Copy(inputString, 1, Pos('.', inputString) - 1)));
   fractionalPart := Copy(inputString, Pos('.', inputString) + 1, Length(inputString));
 
   // Check if the fractional part has more than 3 decimals
-  if Length(fractionalPart) > 3 then
-  begin
     // Remove trailing zeros
     i := Length(fractionalPart);
     while (i > 0) and (fractionalPart[i] = '0') do
@@ -1034,28 +1026,7 @@ begin
 
     // Join the integer and fractional parts with the decimal point
     Result := integerPart + '.' + fractionalPart;
-  end
-  else
-  begin
-    // Add zeros to make it three decimals long if it's fewer than 3 decimals
-    while Length(fractionalPart) < 3 do
-      fractionalPart := fractionalPart + '0';
-   Result := integerPart + '.' + fractionalPart;
   end;
-end;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 function TForm1.GetTimeFormat: string;
