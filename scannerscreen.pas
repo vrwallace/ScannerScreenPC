@@ -826,6 +826,7 @@ begin
           // Handle any exceptions that may occur
           on E: Exception do
           begin
+            model:='';
             // You can log the error or show an error message
             // For example: ShowMessage('An error occurred: ' + E.Message);
             // or simply do nothing
