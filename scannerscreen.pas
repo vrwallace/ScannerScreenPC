@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, RTTICtrls, Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, ComCtrls, Menus, ColorBox, synaser, ComObj,
-  INIFiles, lclintf, Grids, codes2, shlobj, Windows,  StrUtils;
+  INIFiles, lclintf, Grids, codes2, shlobj, Windows, StrUtils;
 
 type
 
@@ -100,11 +100,12 @@ type
     function GetTimeFormat: string;
   private
     { private declarations }
-   // StartTime: TDateTime;
+    // StartTime: TDateTime;
     //EndTime: TDateTime;
   public
     { public declarations }
     ser: TBlockSerial;
+    model: string;
 
   end;
 
@@ -121,7 +122,7 @@ implementation
 
 procedure TForm1.TimerprobescannerTimer(Sender: TObject);
 var
- // Duration: TDateTime;
+  // Duration: TDateTime;
   rawmessage, modulation, systemname, departmentname, channelname, freq: string;
   glgs: TStringList;
   SpVoice: variant;
@@ -130,7 +131,7 @@ var
   SavedCW: word;
   FileLogfile: Textfile;
   //PersonalPath: array[0..MaxPathLen] of char; //Allocate memory
-  logfilepath,logfiledir: string;
+  logfilepath, logfiledir: string;
   RTGstring: string;
   cmd: string;
   TimeFormat: string;
@@ -236,8 +237,8 @@ begin
           end
           else
           begin
-          freq := trim(ProcessDecimalString(glgs.ValueFromIndex[1]));
-          //freq := trim(ProcessDecimalString('000.01007000'));
+            freq := trim(ProcessDecimalString(glgs.ValueFromIndex[1]));
+            //freq := trim(ProcessDecimalString('000.01007000'));
             modulation := trim(glgs.ValueFromIndex[2]);
             systemname := trim(glgs.ValueFromIndex[5]);
             departmentname := trim(glgs.ValueFromIndex[6]);
@@ -269,7 +270,7 @@ begin
                 rtgstring := FormatDateTime(TimeFormat, now) + ' ' +
                   FormatDateTime('dd mmm yyyy', now) + #13#10 + freq +
                   #13#10 + modulation + #13#10 + systemname + #13#10 +
-                  departmentname + #13#10 + channelname;
+                  departmentname + #13#10 + channelname+ #13#10 +model ;
 
 
                 StringGridRealTimeGrid.InsertColRow(False, 1);
@@ -286,9 +287,10 @@ begin
             //write data start
             if checkboxlogdata.Checked then
             begin
-              logfiledir := editlogdir.text;
-              if trim(logfiledir)='' then begin
-                checkboxlogdata.checked:=false;
+              logfiledir := editlogdir.Text;
+              if trim(logfiledir) = '' then
+              begin
+                checkboxlogdata.Checked := False;
                 exit;
               end;
 
@@ -311,7 +313,7 @@ begin
                   writeln(FileLogfile, FormatDateTime(TimeFormat, now) +
                     ' ' + FormatDateTime('dd mmm yyyy', now) + #9 +
                     freq + #9 + modulation + #9 + systemname + #9 +
-                    departmentname + #9 + channelname);
+                    departmentname + #9 + channelname+#9+model);
                   CloseFile(FileLogfile);
 
                 end
@@ -324,7 +326,7 @@ begin
                   writeln(FileLogfile, FormatDateTime(TimeFormat, now) +
                     ' ' + FormatDateTime('dd mmm yyyy', now) + #9 +
                     freq + #9 + modulation + #9 + systemname + #9 +
-                    departmentname + #9 + channelname);
+                    departmentname + #9 + channelname+#9+model);
                   CloseFile(FileLogfile);
                 end;
               except
@@ -359,8 +361,8 @@ begin
                     READTEXT := WideString(DEPARTMENTNAME + ' ' + channelname);
                 end
                 else
-                  READTEXT := WideString(freq+
-                    ' ' + modulation + ' ' + systemname);
+                  READTEXT := WideString(freq + ' ' +
+                    modulation + ' ' + systemname);
 
 
 
@@ -385,8 +387,8 @@ begin
             //mac speech end
 
           end;
-         // EndTime := Now;
-         // Duration := EndTime - StartTime;
+          // EndTime := Now;
+          // Duration := EndTime - StartTime;
         end
         else
         begin
@@ -455,10 +457,12 @@ end;
 
 procedure TForm1.CheckBoxlogdataChange(Sender: TObject);
 begin
-  if (checkboxlogdata.checked) then begin
-  if not directoryexists(editlogdir.text) then begin
-    showmessage('Select Log Directory');
-    checkboxlogdata.checked:=false;
+  if (checkboxlogdata.Checked) then
+  begin
+    if not directoryexists(editlogdir.Text) then
+    begin
+      ShowMessage('Select Log Directory');
+      checkboxlogdata.Checked := False;
     end;
   end;
 
@@ -559,6 +563,10 @@ begin
   c.title.Caption := 'CHANNEL';       // Set columns caption
   c.Index := 5;
 
+  c := StringGridRealTimeGrid.Columns.Add;
+  c.title.Caption := 'MODEL';       // Set columns caption
+  c.Index := 6;
+
 
 
   statictexttime.Font.size := trackbarfontheight.position;
@@ -570,6 +578,7 @@ begin
   labelrate.Caption := '(' + IntToStr(trackbarrate.position) + ')';
 
   ser := TBlockSerial.Create;
+  model:='';
 
 end;
 
@@ -661,7 +670,7 @@ begin
         stringreplace(comboboxscanner.Text, '/', '_', [rfReplaceAll]) + '.ini');
       ini.WriteString('config', 'comport', comboboxcomport.Text);
       ini.WriteString('config', 'Scanner', comboboxscanner.Text);
-      ini.WriteString('config', 'logdir', editlogdir.text);
+      ini.WriteString('config', 'logdir', editlogdir.Text);
 
 
       ini.Writebool('config', 'TTSEnable', CheckBoxtexttospeech.Checked);
@@ -736,9 +745,11 @@ end;
 
 procedure TForm1.ButtonconnecttoscannerClick(Sender: TObject);
 var
+  modelstring: TStringList;
   INI: TINIFile;
   converteddevicename: string;
   PersonalPath: array[0..MaxPathLen] of char;
+  cmd, rawmessage: string;
 begin
   try
     if ComboBoxcomport.ItemIndex = -1 then
@@ -758,10 +769,94 @@ begin
 
     ser.Connect(trim(comboboxcomport.Text));
 
-     ser.AtTimeout := 4000;
-     ser.InterPacketTimeout := false;
+    ser.AtTimeout := 4000;
+    ser.InterPacketTimeout := False;
 
     ser.config(115200, 8, 'N', 0, False, False);
+
+    model := '';
+    cmd := 'RMT' + #9 + 'MODEL' + #9;
+    cmd := cmd + IntToStr(checksum(cmd)) + #13#10;
+
+
+    ser.CanWrite(4000);
+    ser.sendstring(cmd);
+    if (ser.LastError <> 0) then
+    begin
+
+      memo1.Clear;
+      memo1.Lines.Add('I/O Error');
+      StaticTextFreq.Caption := ser.LastErrorDesc;
+      StaticTextsystemname.Caption :=
+        'Disconnect cable, restart scanner and try again.';
+
+      StaticTextdepartmentname.Caption := ' ';
+      StaticTextchannelname.Caption := ' ';
+      Timerprobescanner.Enabled := False;
+      ser.CloseSocket;
+      Buttondisconnectfromscanner.Enabled := False;
+      Buttonconnecttoscanner.Enabled := True;
+      comboboxcomport.Enabled := True;
+      comboboxscanner.Enabled := True;
+      Exit;
+
+    end;
+    if ser.canread(4000) then
+    begin
+      rawmessage := ser.Recvstring(4000);
+
+
+
+      modelstring := TStringList.Create;
+      try
+        try
+          modelstring.Delimiter := #9;
+          modelstring.StrictDelimiter := True;
+          modelstring.DelimitedText := rawmessage;
+
+
+
+          if modelstring.Count > 2 then
+          begin
+            model := Trim(modelstring.ValueFromIndex[2]);
+
+          end;
+
+        except
+          // Handle any exceptions that may occur
+          on E: Exception do
+          begin
+            // You can log the error or show an error message
+            // For example: ShowMessage('An error occurred: ' + E.Message);
+            // or simply do nothing
+          end;
+        end;
+
+      finally
+        // Free the TStringList object in the finally block
+        modelstring.Free;
+      end;
+
+    end
+    else
+    begin
+      memo1.Clear;
+      memo1.Lines.Add('Cannot read device');
+      StaticTextFreq.Caption := 'Cannot read device';
+      StaticTextsystemname.Caption := ' ';
+      StaticTextdepartmentname.Caption := ' ';
+      StaticTextchannelname.Caption := ' ';
+      Timerprobescanner.Enabled := False;
+      ser.CloseSocket;
+      Buttondisconnectfromscanner.Enabled := False;
+      Buttonconnecttoscanner.Enabled := True;
+      comboboxcomport.Enabled := True;
+      comboboxscanner.Enabled := True;
+
+      exit;
+    end;
+    // showmessage(rawmessage);
+
 
     if not directoryexists(getappconfigdir(False)) then
       forcedirectories(getappconfigdir(False));
@@ -803,9 +898,10 @@ begin
             ini.ReadString('config', 'WindowColor', ColorBoxwindow.Text);
           form1.color := ColorBoxwindow.Selected;
 
-           PersonalPath := '';
-             SHGetSpecialFolderPath(0, PersonalPath, CSIDL_PERSONAL, False);
-          editlogdir.text :=ini.ReadString('config', 'logdir', personalpath+'\scannerscreenlog');
+          PersonalPath := '';
+          SHGetSpecialFolderPath(0, PersonalPath, CSIDL_PERSONAL, False);
+          editlogdir.Text := ini.ReadString('config', 'logdir',
+            personalpath + '\scannerscreenlog');
 
           StringGridRealTimeGrid.color := ColorBoxwindow.Selected;
 
@@ -889,11 +985,11 @@ procedure TForm1.Button1Click(Sender: TObject);
 var
   SelectDirectoryDialog: TSelectDirectoryDialog;
   SelectedDir: string;
-   PersonalPath: array[0..MaxPathLen] of char;
+  PersonalPath: array[0..MaxPathLen] of char;
 begin
 
   PersonalPath := '';
-             SHGetSpecialFolderPath(0, PersonalPath, CSIDL_PERSONAL, False);
+  SHGetSpecialFolderPath(0, PersonalPath, CSIDL_PERSONAL, False);
 
   SelectDirectoryDialog := TSelectDirectoryDialog.Create(nil);
   try
@@ -906,7 +1002,7 @@ begin
     if SelectDirectoryDialog.Execute then
     begin
       SelectedDir := SelectDirectoryDialog.FileName;
-     Editlogdir.text:= SelectedDir;
+      Editlogdir.Text := SelectedDir;
     end;
   finally
     SelectDirectoryDialog.Free;
@@ -945,8 +1041,14 @@ var
 begin
   ThisMoment := Now;
   TimeFormat := GetTimeFormat;
-  statictexttime.Caption := FormatDateTime(TimeFormat, ThisMoment) +
+
+  if trim(model)<>'' then
+  statictexttime.Caption := model+': '+FormatDateTime(TimeFormat, ThisMoment) +
+    ' ' + FormatDateTime('dd mmm yyyy', ThisMoment)
+    else
+    statictexttime.Caption := FormatDateTime(TimeFormat, ThisMoment) +
     ' ' + FormatDateTime('dd mmm yyyy', ThisMoment);
+
 end;
 
 procedure TForm1.TrackBarfontheightChange(Sender: TObject);
@@ -987,7 +1089,7 @@ var
   integerPart, fractionalPart: string;
   i: integer;
 begin
-  inputString:=trim(inputstring);
+  inputString := trim(inputstring);
 
   // Check if the input is a string
   if not (inputString <> '') then
@@ -1015,23 +1117,23 @@ begin
 
 
   // Split the string into integer and fractional parts
-  integerPart := inttostr(strtoint(Copy(inputString, 1, Pos('.', inputString) - 1)));
+  integerPart := IntToStr(StrToInt(Copy(inputString, 1, Pos('.', inputString) - 1)));
   fractionalPart := Copy(inputString, Pos('.', inputString) + 1, Length(inputString));
 
 
-    // Remove trailing zeros
-    i := Length(fractionalPart);
-    while (i > 0) and (fractionalPart[i] = '0') do
-      Dec(i);
-    fractionalPart := Copy(fractionalPart, 1, i);
+  // Remove trailing zeros
+  i := Length(fractionalPart);
+  while (i > 0) and (fractionalPart[i] = '0') do
+    Dec(i);
+  fractionalPart := Copy(fractionalPart, 1, i);
 
-    // Add zeros to make it three decimals long if it's fewer than 3 decimals
-    while Length(fractionalPart) < 3 do
-      fractionalPart := fractionalPart + '0';
+  // Add zeros to make it three decimals long if it's fewer than 3 decimals
+  while Length(fractionalPart) < 3 do
+    fractionalPart := fractionalPart + '0';
 
-    // Join the integer and fractional parts with the decimal point
-    Result := integerPart + '.' + fractionalPart;
-  end;
+  // Join the integer and fractional parts with the decimal point
+  Result := integerPart + '.' + fractionalPart;
+end;
 
 
 function TForm1.GetTimeFormat: string;
