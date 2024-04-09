@@ -4,7 +4,7 @@ object Form1: TForm1
   Top = 157
   Width = 1666
   Anchors = []
-  Caption = 'Scanner Screen - Version 2.658MAC  - By Von Wallace'
+  Caption = 'Scanner Screen - Version 2.659MAC  - By Von Wallace'
   ClientHeight = 914
   ClientWidth = 1666
   Color = clWhite
@@ -295,7 +295,7 @@ object Form1: TForm1
       ParentColor = False
       TabOrder = 2
       object Label1: TLabel
-        Left = 9
+        Left = 8
         Height = 25
         Top = 12
         Width = 52
@@ -305,7 +305,7 @@ object Form1: TForm1
       object Buttonconnecttoscanner: TButton
         Left = 8
         Height = 38
-        Top = 88
+        Top = 130
         Width = 246
         Caption = 'Connect to Scanner'
         TabOrder = 0
@@ -314,7 +314,7 @@ object Form1: TForm1
       object Buttondisconnectfromscanner: TButton
         Left = 9
         Height = 38
-        Top = 126
+        Top = 176
         Width = 246
         Caption = 'Disconnect from Scanner'
         Enabled = False
@@ -329,7 +329,7 @@ object Form1: TForm1
         ItemHeight = 25
         ParentBidiMode = False
         ParentShowHint = False
-        ShowHint = True
+        ReadOnly = True
         Style = csDropDownList
         TabOrder = 2
         OnDropDown = ComboBoxcomportDropDown
@@ -337,7 +337,7 @@ object Form1: TForm1
       object Label8: TLabel
         Left = 9
         Height = 25
-        Top = 52
+        Top = 88
         Width = 62
         Caption = 'Scanner'
         ParentColor = False
@@ -345,15 +345,43 @@ object Form1: TForm1
       object ComboBoxScanner: TComboBox
         Left = 96
         Height = 33
-        Top = 51
+        Top = 88
         Width = 252
         ItemHeight = 25
         Items.Strings = (
           '396/996/436/536/SDS'
           'HP-#'
         )
+        ParentShowHint = False
+        ReadOnly = True
+        ShowHint = True
         Style = csDropDownList
         TabOrder = 3
+      end
+      object ComboBoxrate: TComboBox
+        Left = 96
+        Height = 33
+        Top = 51
+        Width = 252
+        ItemHeight = 25
+        Items.Strings = (
+          '115200'
+          '57600'
+          '38400'
+          '19200'
+          '9600'
+        )
+        ParentShowHint = False
+        ReadOnly = True
+        Style = csDropDownList
+        TabOrder = 4
+      end
+      object Label9: TLabel
+        Left = 10
+        Height = 25
+        Top = 51
+        Width = 35
+        Caption = 'Rate'
       end
     end
     object GroupBox5: TGroupBox

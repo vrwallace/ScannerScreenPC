@@ -23,6 +23,7 @@ type
     CheckBoxstayontop: TCheckBox;
     ColorBoxwindow: TColorBox;
     ColorBoxfont: TColorBox;
+    ComboBoxrate: TComboBox;
     ComboBoxScanner: TComboBox;
     ComboBoxcomport: TComboBox;
     Editlogdir: TEdit;
@@ -39,6 +40,7 @@ type
     Label6: TLabel;
     Label7: TLabel;
     Label8: TLabel;
+    Label9: TLabel;
     Labelfontheight: TLabel;
     LabelRate: TLabel;
     MainMenu1: TMainMenu;
@@ -166,6 +168,7 @@ begin
         Buttonconnecttoscanner.Enabled := True;
         comboboxcomport.Enabled := True;
         comboboxscanner.Enabled := True;
+        comboboxrate.enabled:=true;
         Exit;
 
       end;
@@ -187,6 +190,7 @@ begin
         Buttonconnecttoscanner.Enabled := True;
         comboboxcomport.Enabled := True;
         comboboxscanner.Enabled := True;
+        comboboxrate.enabled:=true;
 
         exit;
       end;
@@ -425,6 +429,7 @@ begin
       Buttonconnecttoscanner.Enabled := True;
       comboboxcomport.Enabled := True;
       comboboxscanner.Enabled := True;
+      comboboxrate.enabled:=true;
       memo1.Clear;
       memo1.Lines.Add('Program exception occured');
       StaticTextFreq.Caption := 'Program exception occured';
@@ -446,6 +451,7 @@ begin
   Buttonconnecttoscanner.Enabled := True;
   comboboxcomport.Enabled := True;
   comboboxscanner.Enabled := True;
+  comboboxrate.enabled:=true;
   memo1.Clear;
 
   StaticTextFreq.Caption := ' ';
@@ -670,6 +676,8 @@ begin
         stringreplace(comboboxscanner.Text, '/', '_', [rfReplaceAll]) + '.ini');
       ini.WriteString('config', 'comport', comboboxcomport.Text);
       ini.WriteString('config', 'Scanner', comboboxscanner.Text);
+      ini.WriteString('config', 'Rate', comboboxrate.Text);
+
       ini.WriteString('config', 'logdir', editlogdir.Text);
 
 
@@ -750,6 +758,7 @@ var
   converteddevicename: string;
   PersonalPath: array[0..MaxPathLen] of char;
   cmd, rawmessage: string;
+  baudrate:integer;
 begin
   try
     if ComboBoxcomport.ItemIndex = -1 then
@@ -758,7 +767,16 @@ begin
       exit;
     end;
 
-    if ComboBoxscanner.ItemIndex = -1 then
+
+
+
+     if ComboBoxrate.ItemIndex = -1 then
+    begin
+      ShowMessage('Select Rate!');
+      exit;
+    end;
+
+      if ComboBoxscanner.ItemIndex = -1 then
     begin
       ShowMessage('Select correct Scanner!');
       exit;
@@ -772,8 +790,10 @@ begin
     ser.AtTimeout := 4000;
     ser.InterPacketTimeout := False;
 
-    ser.config(115200, 8, 'N', 0, False, False);
+    BaudRate := StrToInt(ComboBoxrate.Items[ComboBoxrate.ItemIndex]);
 
+    //ser.config(115200, 8, 'N', 0, False, False);
+        ser.config(baudrate, 8, 'N', 0, False, False);
     model := '';
     cmd := 'RMT' + #9 + 'MODEL' + #9;
     cmd := cmd + IntToStr(checksum(cmd)) + #13#10;
@@ -798,6 +818,7 @@ begin
       Buttonconnecttoscanner.Enabled := True;
       comboboxcomport.Enabled := True;
       comboboxscanner.Enabled := True;
+      comboboxrate.enabled:=true;
       Exit;
 
     end;
@@ -853,6 +874,7 @@ begin
       Buttonconnecttoscanner.Enabled := True;
       comboboxcomport.Enabled := True;
       comboboxscanner.Enabled := True;
+      comboboxrate.enabled:=true;
 
       exit;
     end;
@@ -970,6 +992,7 @@ begin
     Buttonconnecttoscanner.Enabled := False;
     comboboxcomport.Enabled := False;
     comboboxscanner.Enabled := False;
+    comboboxrate.enabled:=false;
 
 
 
