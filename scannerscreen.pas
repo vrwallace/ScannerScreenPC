@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, RTTICtrls, Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, ComCtrls, Menus, ColorBox, synaser, ComObj,
-  INIFiles, lclintf, Grids, codes2, shlobj, Windows, StrUtils;
+  INIFiles, lclintf, Grids, codes2, shlobj, Windows, StrUtils,dateutils;
 
 type
 
@@ -17,6 +17,7 @@ type
     Button1: TButton;
     Buttonconnecttoscanner: TButton;
     Buttondisconnectfromscanner: TButton;
+    CheckBoxhold: TCheckBox;
     CheckBoxwindowflash: TCheckBox;
     CheckBoxlogdata: TCheckBox;
     CheckBoxtexttospeech: TCheckBox;
@@ -108,7 +109,7 @@ type
     { public declarations }
     ser: TBlockSerial;
     model: string;
-
+    startTime:TDateTime;
   end;
 
 var
@@ -124,6 +125,9 @@ implementation
 
 procedure TForm1.TimerprobescannerTimer(Sender: TObject);
 var
+
+  stopTime: TDateTime;
+  durationSeconds: Integer;
   // Duration: TDateTime;
   rawmessage, modulation, systemname, departmentname, channelname, freq: string;
   glgs: TStringList;
@@ -198,17 +202,23 @@ begin
 
     end;
 
-    if ((pos('GLG,,,,,', rawmessage) > 0) or
-      (pos('RMT' + #9 + 'STATUS' + #9 + #9 + #9, rawmessage) > 0)) then
-    begin
-      memo1.Clear;
-      memo1.Lines.Add('Scanning or idle');
-      StaticTextFreq.Caption := 'Scanning or idle';
-      StaticTextsystemname.Caption := ' ';
-      StaticTextdepartmentname.Caption := ' ';
-      StaticTextchannelname.Caption := ' ';
-      exit;
-    end;
+    stopTime := Now;
+durationSeconds := SecondsBetween(stopTime, startTime);
+
+  if (pos('GLG,,,,,', rawmessage) > 0) or (pos('RMT' + #9 + 'STATUS' + #9 + #9 + #9, rawmessage) > 0) then
+begin
+  if not checkboxhold.Checked or (checkboxhold.Checked and (durationSeconds >= 10)) then
+  begin
+    memo1.Clear;
+    memo1.Lines.Add('Scanning or idle');
+    StaticTextFreq.Caption := 'Scanning or idle';
+    StaticTextsystemname.Caption := ' ';
+    StaticTextdepartmentname.Caption := ' ';
+    StaticTextchannelname.Caption := ' ';
+    exit;
+  end;
+  exit;
+end;
 
     if (((pos('GLG', rawmessage) > 0) and (pos(',', rawmessage) > 0)) or
       (pos('RMT' + #9 + 'STATUS' + #9, rawmessage) > 0)) then
@@ -256,7 +266,7 @@ begin
             (StaticTextsystemname.Caption <> systemname) or
             (StaticTextFreq.Caption <> freq + ' (' + modulation + ')')) then
           begin
-            //StartTime := Now;
+            StartTime := Now;
             StaticTextFreq.Caption := freq + ' (' + modulation + ')';
             StaticTextsystemname.Caption := systemname;
             StaticTextdepartmentname.Caption := departmentname;
@@ -542,7 +552,7 @@ procedure TForm1.FormCreate(Sender: TObject);
 var
   c: TGRIDColumn;
 begin
-
+  starttime:=0;
   // add a custom column a grid
 
   c := StringGridRealTimeGrid.Columns.Add;
@@ -686,6 +696,9 @@ begin
       ini.Writeinteger('config', 'FontHeight', TrackBarfontheight.Position);
       ini.Writebool('config', 'WindowOnTop', CheckBoxstayontop.Checked);
       ini.Writebool('config', 'WindowFlash', CheckBoxwindowflash.Checked);
+
+      ini.Writebool('config', 'Hold', CheckBoxhold.Checked);
+
 
 
       ini.WriteString('config', 'WindowColor', ColorBoxwindow.Text);
@@ -909,6 +922,8 @@ begin
           CheckBoxstayontop.Checked :=
             ini.readbool('config', 'WindowOnTop', CheckBoxstayontop.Checked);
 
+          CheckBoxhold.Checked :=
+            ini.readbool('config', 'Hold', CheckBoxstayontop.Checked);
 
           CheckBoxwindowflash.Checked :=
             ini.Readbool('config', 'WindowFlash', CheckBoxwindowflash.Checked);
@@ -1062,7 +1077,10 @@ procedure TForm1.TimerClockTimer(Sender: TObject);
 var
   ThisMoment: TDateTime;
   TimeFormat: string;
+  // durationSeconds: Integer;
 begin
+
+    //durationSeconds := SecondsBetween(startTime, now);
   ThisMoment := Now;
   TimeFormat := GetTimeFormat;
 

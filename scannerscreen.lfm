@@ -4,7 +4,7 @@ object Form1: TForm1
   Top = 157
   Width = 1666
   Anchors = []
-  Caption = 'Scanner Screen - Version 2.659MAC  - By Von Wallace'
+  Caption = 'Scanner Screen - Version 2.660MAC  - By Von Wallace'
   ClientHeight = 914
   ClientWidth = 1666
   Color = clWhite
@@ -476,6 +476,14 @@ object Form1: TForm1
         Width = 136
         Caption = 'Window Flash'
         TabOrder = 4
+      end
+      object CheckBoxhold: TCheckBox
+        Left = 21
+        Height = 29
+        Top = 144
+        Width = 127
+        Caption = 'Hold Display'
+        TabOrder = 5
       end
     end
   end
