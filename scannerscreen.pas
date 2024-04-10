@@ -242,7 +242,7 @@ end;
 
           if comboboxscanner.Text = 'HP-#' then
           begin
-            freq := trim(glgs.ValueFromIndex[2]);
+            freq := trim(ProcessDecimalString(glgs.ValueFromIndex[2]));
             modulation := trim(glgs.ValueFromIndex[3]);
             systemname := trim(glgs.ValueFromIndex[8]);
             departmentname := trim(glgs.ValueFromIndex[9]);
