@@ -207,7 +207,7 @@ durationSeconds := SecondsBetween(stopTime, startTime);
 
   if (pos('GLG,,,,,', rawmessage) > 0) or (pos('RMT' + #9 + 'STATUS' + #9 + #9 + #9, rawmessage) > 0) then
 begin
-  if not checkboxhold.Checked or (checkboxhold.Checked and (durationSeconds >= 10)) then
+  if not checkboxhold.Checked or (checkboxhold.Checked and (durationSeconds >= 10)) or (starttime=0) then
   begin
     memo1.Clear;
     memo1.Lines.Add('Scanning or idle');
