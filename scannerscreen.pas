@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, RTTICtrls, Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, ComCtrls, Menus, ColorBox, synaser, ComObj,
-  INIFiles, lclintf, Grids, codes2, shlobj, Windows, StrUtils,dateutils;
+  INIFiles, lclintf, Grids, codes2, shlobj, Windows, StrUtils, dateutils;
 
 type
 
@@ -98,6 +98,7 @@ type
     procedure TrackBarfontheightChange(Sender: TObject);
     procedure TrackBarRateChange(Sender: TObject);
     function checksum(s: string): integer;
+    procedure HandleError(const ErrorMessage, ErrorCaption: string);
 
     function ProcessDecimalString(inputString: string): string;
     function GetTimeFormat: string;
@@ -109,7 +110,7 @@ type
     { public declarations }
     ser: TBlockSerial;
     model: string;
-    startTime:TDateTime;
+    startTime: TDateTime;
   end;
 
 var
@@ -127,7 +128,7 @@ procedure TForm1.TimerprobescannerTimer(Sender: TObject);
 var
 
   stopTime: TDateTime;
-  durationSeconds: Integer;
+  durationSeconds: integer;
   // Duration: TDateTime;
   rawmessage, modulation, systemname, departmentname, channelname, freq: string;
   glgs: TStringList;
@@ -150,75 +151,61 @@ begin
   else
     cmd := 'GLG' + #13#10;
 
-  try
-    try
 
-      ser.CanWrite(4000);
+
+
+
+
       ser.sendstring(cmd);
+
       if (ser.LastError <> 0) then
+
       begin
 
-        memo1.Clear;
-        memo1.Lines.Add('I/O Error');
-        StaticTextFreq.Caption := ser.LastErrorDesc;
-        StaticTextsystemname.Caption :=
-          'Disconnect cable, restart scanner and try again.';
+        HandleError('Cannot write device', ser.LastErrorDesc);
 
-        StaticTextdepartmentname.Caption := ' ';
-        StaticTextchannelname.Caption := ' ';
-        Timerprobescanner.Enabled := False;
-        ser.CloseSocket;
-        Buttondisconnectfromscanner.Enabled := False;
-        Buttonconnecttoscanner.Enabled := True;
-        comboboxcomport.Enabled := True;
-        comboboxscanner.Enabled := True;
-        comboboxrate.enabled:=true;
         Exit;
 
       end;
-      if ser.canread(4000) then
-      begin
+
+
         rawmessage := ser.Recvstring(4000);
-      end
-      else
+
+        if (ser.LastError <> 0) then
+
+        begin
+
+          HandleError('Cannot read device', ser.LastErrorDesc);
+
+          Exit;
+
+        end;
+
+
+
+
+
+
+  try
+    stopTime := Now;
+    durationSeconds := SecondsBetween(stopTime, startTime);
+
+    if (pos('GLG,,,,,', rawmessage) > 0) or
+      (pos('RMT' + #9 + 'STATUS' + #9 + #9 + #9, rawmessage) > 0) then
+    begin
+      if not checkboxhold.Checked or (checkboxhold.Checked and
+        (durationSeconds >= 10)) or (starttime = 0) then
       begin
         memo1.Clear;
-        memo1.Lines.Add('Cannot read device');
-        StaticTextFreq.Caption := 'Cannot read device';
+        memo1.Lines.Add('Scanning or idle');
+        StaticTextFreq.Caption := 'Scanning or idle';
         StaticTextsystemname.Caption := ' ';
         StaticTextdepartmentname.Caption := ' ';
         StaticTextchannelname.Caption := ' ';
-        Timerprobescanner.Enabled := False;
-        ser.CloseSocket;
-        Buttondisconnectfromscanner.Enabled := False;
-        Buttonconnecttoscanner.Enabled := True;
-        comboboxcomport.Enabled := True;
-        comboboxscanner.Enabled := True;
-        comboboxrate.enabled:=true;
-
         exit;
       end;
-    finally
-
+      exit;
     end;
-
-    stopTime := Now;
-durationSeconds := SecondsBetween(stopTime, startTime);
-
-  if (pos('GLG,,,,,', rawmessage) > 0) or (pos('RMT' + #9 + 'STATUS' + #9 + #9 + #9, rawmessage) > 0) then
-begin
-  if not checkboxhold.Checked or (checkboxhold.Checked and (durationSeconds >= 10)) or (starttime=0) then
-  begin
-    memo1.Clear;
-    memo1.Lines.Add('Scanning or idle');
-    StaticTextFreq.Caption := 'Scanning or idle';
-    StaticTextsystemname.Caption := ' ';
-    StaticTextdepartmentname.Caption := ' ';
-    StaticTextchannelname.Caption := ' ';
-    exit;
-  end;
-  exit;
-end;
 
     if (((pos('GLG', rawmessage) > 0) and (pos(',', rawmessage) > 0)) or
       (pos('RMT' + #9 + 'STATUS' + #9, rawmessage) > 0)) then
@@ -284,7 +271,7 @@ end;
                 rtgstring := FormatDateTime(TimeFormat, now) + ' ' +
                   FormatDateTime('dd mmm yyyy', now) + #13#10 + freq +
                   #13#10 + modulation + #13#10 + systemname + #13#10 +
-                  departmentname + #13#10 + channelname+ #13#10 +model ;
+                  departmentname + #13#10 + channelname + #13#10 + model;
 
 
                 StringGridRealTimeGrid.InsertColRow(False, 1);
@@ -327,7 +314,7 @@ end;
                   writeln(FileLogfile, FormatDateTime(TimeFormat, now) +
                     ' ' + FormatDateTime('dd mmm yyyy', now) + #9 +
                     freq + #9 + modulation + #9 + systemname + #9 +
-                    departmentname + #9 + channelname+#9+model);
+                    departmentname + #9 + channelname + #9 + model);
                   CloseFile(FileLogfile);
 
                 end
@@ -340,7 +327,7 @@ end;
                   writeln(FileLogfile, FormatDateTime(TimeFormat, now) +
                     ' ' + FormatDateTime('dd mmm yyyy', now) + #9 +
                     freq + #9 + modulation + #9 + systemname + #9 +
-                    departmentname + #9 + channelname+#9+model);
+                    departmentname + #9 + channelname + #9 + model);
                   CloseFile(FileLogfile);
                 end;
               except
@@ -375,8 +362,8 @@ end;
                     READTEXT := WideString(DEPARTMENTNAME + ' ' + channelname);
                 end
                 else
-                  READTEXT := WideString(freq + ' ' +
-                    modulation + ' ' + systemname);
+                  READTEXT :=
+                    WideString(freq + ' ' + modulation + ' ' + systemname);
 
 
 
@@ -439,7 +426,7 @@ end;
       Buttonconnecttoscanner.Enabled := True;
       comboboxcomport.Enabled := True;
       comboboxscanner.Enabled := True;
-      comboboxrate.enabled:=true;
+      comboboxrate.Enabled := True;
       memo1.Clear;
       memo1.Lines.Add('Program exception occured');
       StaticTextFreq.Caption := 'Program exception occured';
@@ -461,7 +448,7 @@ begin
   Buttonconnecttoscanner.Enabled := True;
   comboboxcomport.Enabled := True;
   comboboxscanner.Enabled := True;
-  comboboxrate.enabled:=true;
+  comboboxrate.Enabled := True;
   memo1.Clear;
 
   StaticTextFreq.Caption := ' ';
@@ -515,7 +502,7 @@ end;
 
 procedure TForm1.ComboBoxcomportDropDown(Sender: TObject);
 begin
-  comboboxcomport.Clear;
+
 
   comboboxcomport.Items.CommaText := GetSerialPortNames();
 end;
@@ -552,7 +539,7 @@ procedure TForm1.FormCreate(Sender: TObject);
 var
   c: TGRIDColumn;
 begin
-  starttime:=0;
+  starttime := 0;
   // add a custom column a grid
 
   c := StringGridRealTimeGrid.Columns.Add;
@@ -594,7 +581,7 @@ begin
   labelrate.Caption := '(' + IntToStr(trackbarrate.position) + ')';
 
   ser := TBlockSerial.Create;
-  model:='';
+  model := '';
 
 end;
 
@@ -771,7 +758,7 @@ var
   converteddevicename: string;
   PersonalPath: array[0..MaxPathLen] of char;
   cmd, rawmessage: string;
-  baudrate:integer;
+  baudrate: integer;
 begin
   try
     if ComboBoxcomport.ItemIndex = -1 then
@@ -783,13 +770,13 @@ begin
 
 
 
-     if ComboBoxrate.ItemIndex = -1 then
+    if ComboBoxrate.ItemIndex = -1 then
     begin
       ShowMessage('Select Rate!');
       exit;
     end;
 
-      if ComboBoxscanner.ItemIndex = -1 then
+    if ComboBoxscanner.ItemIndex = -1 then
     begin
       ShowMessage('Select correct Scanner!');
       exit;
@@ -806,91 +793,39 @@ begin
     BaudRate := StrToInt(ComboBoxrate.Items[ComboBoxrate.ItemIndex]);
 
     //ser.config(115200, 8, 'N', 0, False, False);
-        ser.config(baudrate, 8, 'N', 0, False, False);
+    ser.config(baudrate, 8, 'N', 0, False, False);
     model := '';
     cmd := 'RMT' + #9 + 'MODEL' + #9;
     cmd := cmd + IntToStr(checksum(cmd)) + #13#10;
 
-
-    ser.CanWrite(4000);
-    ser.sendstring(cmd);
-    if (ser.LastError <> 0) then
-    begin
-
-      memo1.Clear;
-      memo1.Lines.Add('I/O Error');
-      StaticTextFreq.Caption := ser.LastErrorDesc;
-      StaticTextsystemname.Caption :=
-        'Disconnect cable, restart scanner and try again.';
-
-      StaticTextdepartmentname.Caption := ' ';
-      StaticTextchannelname.Caption := ' ';
-      Timerprobescanner.Enabled := False;
-      ser.CloseSocket;
-      Buttondisconnectfromscanner.Enabled := False;
-      Buttonconnecttoscanner.Enabled := True;
-      comboboxcomport.Enabled := True;
-      comboboxscanner.Enabled := True;
-      comboboxrate.enabled:=true;
-      Exit;
-
-    end;
-    if ser.canread(4000) then
-    begin
-      rawmessage := ser.Recvstring(4000);
-
-
-
-      modelstring := TStringList.Create;
-      try
-        try
-          modelstring.Delimiter := #9;
-          modelstring.StrictDelimiter := True;
-          modelstring.DelimitedText := rawmessage;
-
-
-
-          if modelstring.Count > 2 then
-          begin
-            model := Trim(modelstring.ValueFromIndex[2]);
-
-          end;
-
-        except
-          // Handle any exceptions that may occur
-          on E: Exception do
-          begin
-            model:='';
-            // You can log the error or show an error message
-            // For example: ShowMessage('An error occurred: ' + E.Message);
-            // or simply do nothing
-          end;
-        end;
-
-      finally
-        // Free the TStringList object in the finally block
-        modelstring.Free;
+      ser.SendString(cmd);
+      if ser.LastError <> 0 then
+      begin
+        HandleError('Cannot write device', ser.LastErrorDesc);
+        Exit;
       end;
 
-    end
-    else
-    begin
-      memo1.Clear;
-      memo1.Lines.Add('Cannot read device');
-      StaticTextFreq.Caption := 'Cannot read device';
-      StaticTextsystemname.Caption := ' ';
-      StaticTextdepartmentname.Caption := ' ';
-      StaticTextchannelname.Caption := ' ';
-      Timerprobescanner.Enabled := False;
-      ser.CloseSocket;
-      Buttondisconnectfromscanner.Enabled := False;
-      Buttonconnecttoscanner.Enabled := True;
-      comboboxcomport.Enabled := True;
-      comboboxscanner.Enabled := True;
-      comboboxrate.enabled:=true;
+        rawMessage := ser.RecvString(4000);
+        if ser.LastError <> 0 then
+        begin
+          HandleError('Cannot read device', ser.LastErrorDesc);
+          Exit;
+        end;
 
-      exit;
-    end;
+        modelString := TStringList.Create;
+        try
+          modelString.Delimiter := #9;
+          modelString.StrictDelimiter := True;
+          modelString.DelimitedText := rawMessage;
+          if modelString.Count > 2 then
+            model := Trim(modelString[2])
+          else
+            model := '';
+        finally
+          modelString.Free;
+        end;
+
+
     // showmessage(rawmessage);
 
 
@@ -1007,7 +942,7 @@ begin
     Buttonconnecttoscanner.Enabled := False;
     comboboxcomport.Enabled := False;
     comboboxscanner.Enabled := False;
-    comboboxrate.enabled:=false;
+    comboboxrate.Enabled := False;
 
 
 
@@ -1080,16 +1015,16 @@ var
   // durationSeconds: Integer;
 begin
 
-    //durationSeconds := SecondsBetween(startTime, now);
+  //durationSeconds := SecondsBetween(startTime, now);
   ThisMoment := Now;
   TimeFormat := GetTimeFormat;
 
-  if trim(model)<>'' then
-  statictexttime.Caption := model+': '+FormatDateTime(TimeFormat, ThisMoment) +
-    ' ' + FormatDateTime('dd mmm yyyy', ThisMoment)
-    else
+  if trim(model) <> '' then
+    statictexttime.Caption := model + ': ' + FormatDateTime(TimeFormat, ThisMoment) +
+      ' ' + FormatDateTime('dd mmm yyyy', ThisMoment)
+  else
     statictexttime.Caption := FormatDateTime(TimeFormat, ThisMoment) +
-    ' ' + FormatDateTime('dd mmm yyyy', ThisMoment);
+      ' ' + FormatDateTime('dd mmm yyyy', ThisMoment);
 
 end;
 
@@ -1175,6 +1110,23 @@ begin
 
   // Join the integer and fractional parts with the decimal point
   Result := integerPart + '.' + fractionalPart;
+end;
+
+procedure tform1.HandleError(const ErrorMessage, ErrorCaption: string);
+begin
+  memo1.Clear;
+  memo1.Lines.Add(ErrorMessage);
+  StaticTextFreq.Caption := ErrorCaption;
+  StaticTextsystemname.Caption := 'Disconnect cable, restart scanner and try again.';
+  StaticTextdepartmentname.Caption := ' ';
+  StaticTextchannelname.Caption := ' ';
+  Timerprobescanner.Enabled := False;
+  ser.CloseSocket;
+  Buttondisconnectfromscanner.Enabled := False;
+  Buttonconnecttoscanner.Enabled := True;
+  comboboxcomport.Enabled := True;
+  comboboxscanner.Enabled := True;
+  comboboxrate.Enabled := True;
 end;
 
 
