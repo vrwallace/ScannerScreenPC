@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, RTTICtrls, Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, ComCtrls, Menus, ColorBox, synaser, ComObj,
-  INIFiles, lclintf, Grids, codes2, shlobj, Windows, StrUtils, dateutils;
+  INIFiles, lclintf, Grids, Spin, codes2, shlobj, Windows, StrUtils, dateutils;
 
 type
 
@@ -34,6 +34,7 @@ type
     GroupBox4: TGroupBox;
     GroupBox5: TGroupBox;
     Label1: TLabel;
+    Label10: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
@@ -60,6 +61,7 @@ type
     MenuItemSaveSettings: TMenuItem;
     PopupMenu1: TPopupMenu;
     SelectDirectoryDialog1: TSelectDirectoryDialog;
+    SpinEditscanner: TSpinEdit;
     statictexttime: TStaticText;
     StaticTextsystemname: TStaticText;
     StaticTextdepartmentname: TStaticText;
@@ -271,7 +273,7 @@ begin
                 rtgstring := FormatDateTime(TimeFormat, now) + ' ' +
                   FormatDateTime('dd mmm yyyy', now) + #13#10 + freq +
                   #13#10 + modulation + #13#10 + systemname + #13#10 +
-                  departmentname + #13#10 + channelname + #13#10 + model;
+                  departmentname + #13#10 + channelname + #13#10 + model+#13#10 + inttostr(spineditscanner.value);
 
 
                 StringGridRealTimeGrid.InsertColRow(False, 1);
@@ -314,7 +316,7 @@ begin
                   writeln(FileLogfile, FormatDateTime(TimeFormat, now) +
                     ' ' + FormatDateTime('dd mmm yyyy', now) + #9 +
                     freq + #9 + modulation + #9 + systemname + #9 +
-                    departmentname + #9 + channelname + #9 + model);
+                    departmentname + #9 + channelname + #9 + model+ #9 + inttostr(spineditscanner.value));
                   CloseFile(FileLogfile);
 
                 end
@@ -327,7 +329,7 @@ begin
                   writeln(FileLogfile, FormatDateTime(TimeFormat, now) +
                     ' ' + FormatDateTime('dd mmm yyyy', now) + #9 +
                     freq + #9 + modulation + #9 + systemname + #9 +
-                    departmentname + #9 + channelname + #9 + model);
+                    departmentname + #9 + channelname + #9 + model+ #9 + inttostr(spineditscanner.value));
                   CloseFile(FileLogfile);
                 end;
               except
@@ -570,6 +572,10 @@ begin
   c.title.Caption := 'MODEL';       // Set columns caption
   c.Index := 6;
 
+  c := StringGridRealTimeGrid.Columns.Add;
+  c.title.Caption := 'SCANNER INDEX';       // Set columns caption
+  c.Index := 7;
+
 
 
   statictexttime.Font.size := trackbarfontheight.position;
@@ -643,6 +649,7 @@ end;
 procedure TForm1.MenuItemSaveSettingsClick(Sender: TObject);
 var
   INI: TINIFile;
+  i: Integer;
   converteddevicename: string;
 begin
 
@@ -671,6 +678,17 @@ begin
 
       INI := TINIFile.Create(getappconfigdir(False) + converteddevicename +
         stringreplace(comboboxscanner.Text, '/', '_', [rfReplaceAll]) + '.ini');
+
+
+    for i := 0 to StringGridrealtimegrid.ColCount - 1 do
+    begin
+      Ini.WriteInteger('ColumnWidths', 'Column' + IntToStr(i), StringGridrealtimegrid.ColWidths[i]);
+    end;
+
+          Ini.WriteInteger('FormPosition', 'Left', Form1.Left);
+          Ini.WriteInteger('FormPosition', 'Top', Form1.Top);
+
+
       ini.WriteString('config', 'comport', comboboxcomport.Text);
       ini.WriteString('config', 'Scanner', comboboxscanner.Text);
       ini.WriteString('config', 'Rate', comboboxrate.Text);
@@ -680,6 +698,10 @@ begin
 
       ini.Writebool('config', 'TTSEnable', CheckBoxtexttospeech.Checked);
       ini.writeinteger('config', 'TTSRate', TrackBarRate.Position);
+
+      ini.writeinteger('config', 'Sindex', spineditscanner.value);
+
+
       ini.Writeinteger('config', 'FontHeight', TrackBarfontheight.Position);
       ini.Writebool('config', 'WindowOnTop', CheckBoxstayontop.Checked);
       ini.Writebool('config', 'WindowFlash', CheckBoxwindowflash.Checked);
@@ -759,6 +781,7 @@ var
   PersonalPath: array[0..MaxPathLen] of char;
   cmd, rawmessage: string;
   baudrate: integer;
+  i: Integer;
 begin
   try
     if ComboBoxcomport.ItemIndex = -1 then
@@ -847,6 +870,14 @@ begin
           INI := TINIFile.Create(getappconfigdir(False) + converteddevicename +
             stringreplace(comboboxscanner.Text, '/', '_', [rfReplaceAll]) + '.ini');
 
+
+            for i := 0 to StringGridrealtimegrid.ColCount - 1 do
+    begin
+      StringGridrealtimegrid.ColWidths[i] := Ini.ReadInteger('ColumnWidths', 'Column' + IntToStr(i), StringGridrealtimegrid.DefaultColWidth);
+    end;
+             Form1.Left := Ini.ReadInteger('FormPosition', 'Left', Form1.Left);
+            Form1.Top := Ini.ReadInteger('FormPosition', 'Top', Form1.Top);
+
           if groupbox3.Visible then
             CheckBoxtexttospeech.Checked :=
               ini.readbool('config', 'TTSEnable', CheckBoxtexttospeech.Checked);
@@ -890,7 +921,7 @@ begin
           form1.Height := ini.readinteger('config', 'WindowHeight', form1.Height);
           form1.Width := ini.readinteger('config', 'WindowWidth', form1.Width);
 
-
+          spineditscanner.value := ini.readinteger('config', 'SIndex', spineditscanner.value);
 
 
           GroupBoxSettings.Visible :=
@@ -1020,10 +1051,10 @@ begin
   TimeFormat := GetTimeFormat;
 
   if trim(model) <> '' then
-    statictexttime.Caption := model + ': ' + FormatDateTime(TimeFormat, ThisMoment) +
+    statictexttime.Caption := model + '#'+inttostr(spineditscanner.value)+' ' + FormatDateTime(TimeFormat, ThisMoment) +
       ' ' + FormatDateTime('dd mmm yyyy', ThisMoment)
   else
-    statictexttime.Caption := FormatDateTime(TimeFormat, ThisMoment) +
+    statictexttime.Caption := '#'+inttostr(spineditscanner.value)+' '+FormatDateTime(TimeFormat, ThisMoment) +
       ' ' + FormatDateTime('dd mmm yyyy', ThisMoment);
 
 end;

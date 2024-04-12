@@ -4,7 +4,7 @@ object Form1: TForm1
   Top = 157
   Width = 1666
   Anchors = []
-  Caption = 'Scanner Screen - Version 2.663MAC  - By Von Wallace'
+  Caption = 'Scanner Screen - Version 2.664MAC  - By Von Wallace'
   ClientHeight = 914
   ClientWidth = 1666
   Color = clWhite
@@ -480,10 +480,28 @@ object Form1: TForm1
       object CheckBoxhold: TCheckBox
         Left = 21
         Height = 29
-        Top = 144
+        Top = 135
         Width = 127
         Caption = 'Hold Display'
         TabOrder = 5
+      end
+      object SpinEditscanner: TSpinEdit
+        Left = 416
+        Height = 33
+        Top = 135
+        Width = 91
+        EditorEnabled = False
+        MaxValue = 99
+        MinValue = 1
+        TabOrder = 6
+        Value = 1
+      end
+      object Label10: TLabel
+        Left = 256
+        Height = 25
+        Top = 135
+        Width = 110
+        Caption = 'Scanner Index'
       end
     end
   end
