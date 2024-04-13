@@ -1042,7 +1042,7 @@ end;
 procedure TForm1.TimerClockTimer(Sender: TObject);
 var
   ThisMoment: TDateTime;
-  TimeFormat: string;
+  TimeFormat, indexval:string;
   // durationSeconds: Integer;
 begin
 
@@ -1050,11 +1050,16 @@ begin
   ThisMoment := Now;
   TimeFormat := GetTimeFormat;
 
+  if spineditscanner.value>0 then indexval:= '#'+inttostr(spineditscanner.value)+' '
+  else
+  indexval:='';
+
   if trim(model) <> '' then
-    statictexttime.Caption := model + '#'+inttostr(spineditscanner.value)+' ' + FormatDateTime(TimeFormat, ThisMoment) +
+
+    statictexttime.Caption :=  indexval+ model  +' '+ FormatDateTime(TimeFormat, ThisMoment) +
       ' ' + FormatDateTime('dd mmm yyyy', ThisMoment)
   else
-    statictexttime.Caption := '#'+inttostr(spineditscanner.value)+' '+FormatDateTime(TimeFormat, ThisMoment) +
+    statictexttime.Caption := indexval+FormatDateTime(TimeFormat, ThisMoment) +
       ' ' + FormatDateTime('dd mmm yyyy', ThisMoment);
 
 end;
