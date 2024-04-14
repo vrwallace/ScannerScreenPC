@@ -4,7 +4,7 @@ object Form1: TForm1
   Top = 157
   Width = 1666
   Anchors = []
-  Caption = 'Scanner Screen - Version 2.665MAC  - By Von Wallace'
+  Caption = 'Scanner Screen - Version 2.667MAC  - By Von Wallace'
   ClientHeight = 914
   ClientWidth = 1666
   Color = clWhite
