@@ -22,7 +22,7 @@
         <UnitName Value="ScannerScreen"/>
         <IsVisibleTab Value="True"/>
         <TopLine Value="776"/>
-        <CursorPos Y="813"/>
+        <CursorPos X="215" Y="800"/>
         <UsageCount Value="116"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
