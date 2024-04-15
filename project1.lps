@@ -9,7 +9,7 @@
         <Filename Value="project1.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="3"/>
-        <CursorPos X="71" Y="18"/>
+        <CursorPos Y="22"/>
         <UsageCount Value="116"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -21,8 +21,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ScannerScreen"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="776"/>
-        <CursorPos X="215" Y="800"/>
+        <TopLine Value="811"/>
+        <CursorPos X="40" Y="844"/>
         <UsageCount Value="116"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -222,123 +222,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="677" Column="7" TopLine="660"/>
+        <Caret Line="648" Column="14" TopLine="628"/>
       </Position1>
       <Position2>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="675" Column="98" TopLine="658"/>
+        <Caret Line="779" Column="14" TopLine="759"/>
       </Position2>
       <Position3>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="736" Column="121" TopLine="700"/>
+        <Caret Line="870" Column="56" TopLine="844"/>
       </Position3>
       <Position4>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="869" Column="29" TopLine="839"/>
+        <Caret Line="61" Column="17" TopLine="35"/>
       </Position4>
       <Position5>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="648" Column="14" TopLine="628"/>
+        <Caret Line="92" Column="27" TopLine="47"/>
       </Position5>
       <Position6>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="779" Column="14" TopLine="759"/>
+        <Caret Line="140" Column="7" TopLine="94"/>
       </Position6>
       <Position7>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="870" Column="56" TopLine="844"/>
+        <Caret Line="354" Column="21" TopLine="309"/>
       </Position7>
       <Position8>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="61" Column="17" TopLine="35"/>
+        <Caret Line="373" Column="33" TopLine="328"/>
       </Position8>
       <Position9>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="92" Column="27" TopLine="47"/>
+        <Caret Line="384" Column="33" TopLine="339"/>
       </Position9>
       <Position10>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="140" Column="7" TopLine="94"/>
+        <Caret Line="684" Column="11" TopLine="663"/>
       </Position10>
       <Position11>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="354" Column="21" TopLine="309"/>
+        <Caret Line="738" Column="121" TopLine="693"/>
       </Position11>
       <Position12>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="373" Column="33" TopLine="328"/>
+        <Caret Line="874" Column="30" TopLine="851"/>
       </Position12>
       <Position13>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="384" Column="33" TopLine="339"/>
+        <Caret Line="685" Column="56" TopLine="659"/>
       </Position13>
       <Position14>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="684" Column="11" TopLine="663"/>
+        <Caret Line="876" Column="70" TopLine="848"/>
       </Position14>
       <Position15>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="738" Column="121" TopLine="693"/>
+        <Caret Line="875" Column="76" TopLine="851"/>
       </Position15>
       <Position16>
-        <Filename Value="scannerscreen.pas"/>
-        <Caret Line="874" Column="30" TopLine="851"/>
+        <Filename Value="project1.lpr"/>
+        <Caret Line="22"/>
       </Position16>
       <Position17>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="685" Column="56" TopLine="659"/>
+        <Caret Line="875" Column="76" TopLine="851"/>
       </Position17>
       <Position18>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="876" Column="70" TopLine="848"/>
+        <Caret Line="150" Column="38" TopLine="123"/>
       </Position18>
       <Position19>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="875" Column="76" TopLine="851"/>
+        <Caret Line="196" Column="48" TopLine="175"/>
       </Position19>
       <Position20>
-        <Filename Value="project1.lpr"/>
-        <Caret Line="22"/>
+        <Filename Value="scannerscreen.pas"/>
+        <Caret Line="206" Column="80" TopLine="206"/>
       </Position20>
       <Position21>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="875" Column="76" TopLine="851"/>
+        <Caret Line="578" Column="15" TopLine="543"/>
       </Position21>
       <Position22>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="150" Column="38" TopLine="123"/>
+        <Caret Line="276" Column="105" TopLine="251"/>
       </Position22>
       <Position23>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="196" Column="48" TopLine="175"/>
+        <Caret Line="278" Column="101" TopLine="250"/>
       </Position23>
       <Position24>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="206" Column="80" TopLine="206"/>
+        <Caret Line="325" Column="93" TopLine="293"/>
       </Position24>
       <Position25>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="578" Column="15" TopLine="543"/>
+        <Caret Line="1062" Column="31" TopLine="1041"/>
       </Position25>
       <Position26>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="276" Column="105" TopLine="251"/>
+        <Caret Line="1057" Column="37" TopLine="1032"/>
       </Position26>
       <Position27>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="278" Column="101" TopLine="250"/>
+        <Caret Line="800" Column="215" TopLine="776"/>
       </Position27>
       <Position28>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="325" Column="93" TopLine="293"/>
+        <Caret Line="905" Column="44" TopLine="868"/>
       </Position28>
       <Position29>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="1062" Column="31" TopLine="1041"/>
+        <Caret Line="154" Column="18" TopLine="132"/>
       </Position29>
       <Position30>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="1057" Column="37" TopLine="1032"/>
+        <Caret Line="845" Column="35" TopLine="811"/>
       </Position30>
     </JumpHistory>
     <RunParams>

@@ -818,8 +818,8 @@ begin
     //ser.config(115200, 8, 'N', 0, False, False);
     ser.config(baudrate, 8, 'N', 0, False, False);
     model := '';
-    cmd := 'RMT' + #9 + 'MODEL' + #9;
-    cmd := cmd + IntToStr(checksum(cmd)) + #13#10;
+    cmd := 'MDL' + #13#10;
+
 
       ser.SendString(cmd);
       if ser.LastError <> 0 then
@@ -837,11 +837,11 @@ begin
 
         modelString := TStringList.Create;
         try
-          modelString.Delimiter := #9;
+          modelString.Delimiter := ',';
           modelString.StrictDelimiter := True;
           modelString.DelimitedText := rawMessage;
-          if modelString.Count > 2 then
-            model := Trim(modelString[2])
+          if modelString.Count > 0 then
+            model := Trim(modelString[1])
           else
             model := '';
         finally
