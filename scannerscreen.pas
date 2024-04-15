@@ -156,34 +156,30 @@ begin
 
 
 
+  ser.sendstring(cmd);
+
+  if (ser.LastError <> 0) then
+
+  begin
+
+    HandleError('Cannot write device', ser.LastErrorDesc);
+
+    Exit;
+
+  end;
 
 
-      ser.sendstring(cmd);
+  rawmessage := ser.Recvstring(4000);
 
-      if (ser.LastError <> 0) then
+  if (ser.LastError <> 0) then
 
-      begin
+  begin
 
-        HandleError('Cannot write device', ser.LastErrorDesc);
+    HandleError('Cannot read device', ser.LastErrorDesc);
 
-        Exit;
+    Exit;
 
-      end;
-
-
-        rawmessage := ser.Recvstring(4000);
-
-        if (ser.LastError <> 0) then
-
-        begin
-
-          HandleError('Cannot read device', ser.LastErrorDesc);
-
-          Exit;
-
-        end;
-
-
+  end;
 
 
 
@@ -273,7 +269,8 @@ begin
                 rtgstring := FormatDateTime(TimeFormat, now) + ' ' +
                   FormatDateTime('dd mmm yyyy', now) + #13#10 + freq +
                   #13#10 + modulation + #13#10 + systemname + #13#10 +
-                  departmentname + #13#10 + channelname + #13#10 + model+#13#10 + inttostr(spineditscanner.value);
+                  departmentname + #13#10 + channelname + #13#10 +
+                  model + #13#10 + IntToStr(spineditscanner.Value);
 
 
                 StringGridRealTimeGrid.InsertColRow(False, 1);
@@ -316,7 +313,8 @@ begin
                   writeln(FileLogfile, FormatDateTime(TimeFormat, now) +
                     ' ' + FormatDateTime('dd mmm yyyy', now) + #9 +
                     freq + #9 + modulation + #9 + systemname + #9 +
-                    departmentname + #9 + channelname + #9 + model+ #9 + inttostr(spineditscanner.value));
+                    departmentname + #9 + channelname + #9 + model +
+                    #9 + IntToStr(spineditscanner.Value));
                   CloseFile(FileLogfile);
 
                 end
@@ -329,7 +327,8 @@ begin
                   writeln(FileLogfile, FormatDateTime(TimeFormat, now) +
                     ' ' + FormatDateTime('dd mmm yyyy', now) + #9 +
                     freq + #9 + modulation + #9 + systemname + #9 +
-                    departmentname + #9 + channelname + #9 + model+ #9 + inttostr(spineditscanner.value));
+                    departmentname + #9 + channelname + #9 + model +
+                    #9 + IntToStr(spineditscanner.Value));
                   CloseFile(FileLogfile);
                 end;
               except
@@ -505,7 +504,6 @@ end;
 procedure TForm1.ComboBoxcomportDropDown(Sender: TObject);
 begin
 
-
   comboboxcomport.Items.CommaText := GetSerialPortNames();
 end;
 
@@ -649,7 +647,7 @@ end;
 procedure TForm1.MenuItemSaveSettingsClick(Sender: TObject);
 var
   INI: TINIFile;
-  i: Integer;
+  i: integer;
   converteddevicename: string;
 begin
 
@@ -680,13 +678,14 @@ begin
         stringreplace(comboboxscanner.Text, '/', '_', [rfReplaceAll]) + '.ini');
 
 
-    for i := 0 to StringGridrealtimegrid.ColCount - 1 do
-    begin
-      Ini.WriteInteger('ColumnWidths', 'Column' + IntToStr(i), StringGridrealtimegrid.ColWidths[i]);
-    end;
+      for i := 0 to StringGridrealtimegrid.ColCount - 1 do
+      begin
+        Ini.WriteInteger('ColumnWidths', 'Column' + IntToStr(i),
+          StringGridrealtimegrid.ColWidths[i]);
+      end;
 
-          Ini.WriteInteger('FormPosition', 'Left', Form1.Left);
-          Ini.WriteInteger('FormPosition', 'Top', Form1.Top);
+      Ini.WriteInteger('FormPosition', 'Left', Form1.Left);
+      Ini.WriteInteger('FormPosition', 'Top', Form1.Top);
 
 
       ini.WriteString('config', 'comport', comboboxcomport.Text);
@@ -699,7 +698,7 @@ begin
       ini.Writebool('config', 'TTSEnable', CheckBoxtexttospeech.Checked);
       ini.writeinteger('config', 'TTSRate', TrackBarRate.Position);
 
-      ini.writeinteger('config', 'Sindex', spineditscanner.value);
+      ini.writeinteger('config', 'Sindex', spineditscanner.Value);
 
 
       ini.Writeinteger('config', 'FontHeight', TrackBarfontheight.Position);
@@ -781,7 +780,7 @@ var
   PersonalPath: array[0..MaxPathLen] of char;
   cmd, rawmessage: string;
   baudrate: integer;
-  i: Integer;
+  i: integer;
 begin
   try
     if ComboBoxcomport.ItemIndex = -1 then
@@ -818,35 +817,68 @@ begin
     //ser.config(115200, 8, 'N', 0, False, False);
     ser.config(baudrate, 8, 'N', 0, False, False);
     model := '';
-    cmd := 'MDL' + #13#10;
+
+    if comboboxscanner.Text = 'HP-#' then
+    begin
+      cmd := 'RMT' + #9 + 'MODEL' + #9;
+      cmd := cmd + IntToStr(checksum(cmd)) + #13#10;
+
+    end
+    else
+      cmd := 'MDL' + #13#10;
 
 
-      ser.SendString(cmd);
-      if ser.LastError <> 0 then
+
+
+    ser.SendString(cmd);
+    if ser.LastError <> 0 then
+    begin
+      HandleError('Cannot write device', ser.LastErrorDesc);
+      Exit;
+    end;
+
+    rawMessage := ser.RecvString(4000);
+    if ser.LastError <> 0 then
+    begin
+      HandleError('Cannot read device', ser.LastErrorDesc);
+      Exit;
+    end;
+
+    modelString := TStringList.Create;
+    try
       begin
-        HandleError('Cannot write device', ser.LastErrorDesc);
-        Exit;
-      end;
 
-        rawMessage := ser.RecvString(4000);
-        if ser.LastError <> 0 then
+        if comboboxscanner.Text = 'HP-#' then
         begin
-          HandleError('Cannot read device', ser.LastErrorDesc);
-          Exit;
-        end;
+          modelString.Delimiter := #9;
+          modelString.StrictDelimiter := True;
+          modelString.DelimitedText := rawMessage;
 
-        modelString := TStringList.Create;
-        try
+          if modelString.Count > 2 then
+            model := Trim(modelString[2])
+          else
+            model := '';
+        end
+        else
+        begin
           modelString.Delimiter := ',';
           modelString.StrictDelimiter := True;
           modelString.DelimitedText := rawMessage;
-          if modelString.Count > 0 then
+
+          if modelString.Count > 1 then
             model := Trim(modelString[1])
           else
             model := '';
-        finally
-          modelString.Free;
         end;
+
+      end
+
+
+
+
+    finally
+      modelString.Free;
+    end;
 
 
     // showmessage(rawmessage);
@@ -871,12 +903,14 @@ begin
             stringreplace(comboboxscanner.Text, '/', '_', [rfReplaceAll]) + '.ini');
 
 
-            for i := 0 to StringGridrealtimegrid.ColCount - 1 do
-    begin
-      StringGridrealtimegrid.ColWidths[i] := Ini.ReadInteger('ColumnWidths', 'Column' + IntToStr(i), StringGridrealtimegrid.DefaultColWidth);
-    end;
-             Form1.Left := Ini.ReadInteger('FormPosition', 'Left', Form1.Left);
-            Form1.Top := Ini.ReadInteger('FormPosition', 'Top', Form1.Top);
+          for i := 0 to StringGridrealtimegrid.ColCount - 1 do
+          begin
+            StringGridrealtimegrid.ColWidths[i] :=
+              Ini.ReadInteger('ColumnWidths', 'Column' + IntToStr(i),
+              StringGridrealtimegrid.DefaultColWidth);
+          end;
+          Form1.Left := Ini.ReadInteger('FormPosition', 'Left', Form1.Left);
+          Form1.Top := Ini.ReadInteger('FormPosition', 'Top', Form1.Top);
 
           if groupbox3.Visible then
             CheckBoxtexttospeech.Checked :=
@@ -921,7 +955,8 @@ begin
           form1.Height := ini.readinteger('config', 'WindowHeight', form1.Height);
           form1.Width := ini.readinteger('config', 'WindowWidth', form1.Width);
 
-          spineditscanner.value := ini.readinteger('config', 'SIndex', spineditscanner.value);
+          spineditscanner.Value :=
+            ini.readinteger('config', 'SIndex', spineditscanner.Value);
 
 
           GroupBoxSettings.Visible :=
@@ -1042,7 +1077,7 @@ end;
 procedure TForm1.TimerClockTimer(Sender: TObject);
 var
   ThisMoment: TDateTime;
-  TimeFormat, indexval:string;
+  TimeFormat, indexval: string;
   // durationSeconds: Integer;
 begin
 
@@ -1050,16 +1085,17 @@ begin
   ThisMoment := Now;
   TimeFormat := GetTimeFormat;
 
-  if spineditscanner.value>0 then indexval:= '#'+inttostr(spineditscanner.value)+' '
+  if spineditscanner.Value > 0 then indexval := '#' + IntToStr(spineditscanner.Value) + ' '
   else
-  indexval:='';
+    indexval := '';
 
   if trim(model) <> '' then
 
-    statictexttime.Caption :=  indexval+ model  +' '+ FormatDateTime(TimeFormat, ThisMoment) +
-      ' ' + FormatDateTime('dd mmm yyyy', ThisMoment)
+    statictexttime.Caption := indexval + model + ' ' +
+      FormatDateTime(TimeFormat, ThisMoment) + ' ' +
+      FormatDateTime('dd mmm yyyy', ThisMoment)
   else
-    statictexttime.Caption := indexval+FormatDateTime(TimeFormat, ThisMoment) +
+    statictexttime.Caption := indexval + FormatDateTime(TimeFormat, ThisMoment) +
       ' ' + FormatDateTime('dd mmm yyyy', ThisMoment);
 
 end;

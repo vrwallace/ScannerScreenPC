@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Scanner Screen"
-!define PRODUCT_VERSION "2.669"
+!define PRODUCT_VERSION "2.670"
 !define PRODUCT_PUBLISHER "Von Wallace"
 !define PRODUCT_WEB_SITE "http://vonwallace.com"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\ScannerScreen.exe"
