@@ -9,7 +9,7 @@
         <Filename Value="project1.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="3"/>
-        <CursorPos Y="22"/>
+        <CursorPos Y="23"/>
         <UsageCount Value="116"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -22,7 +22,7 @@
         <UnitName Value="ScannerScreen"/>
         <IsVisibleTab Value="True"/>
         <TopLine Value="837"/>
-        <CursorPos X="15" Y="877"/>
+        <CursorPos Y="877"/>
         <UsageCount Value="116"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -234,7 +234,7 @@
         <UsageCount Value="10"/>
       </Unit32>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="scannerscreen.pas"/>
         <Caret Line="92" Column="27" TopLine="47"/>
@@ -345,16 +345,12 @@
       </Position27>
       <Position28>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="155" Column="28" TopLine="188"/>
+        <Caret Line="839" Column="211" TopLine="824"/>
       </Position28>
       <Position29>
         <Filename Value="scannerscreen.pas"/>
-        <Caret Line="839" Column="211" TopLine="824"/>
-      </Position29>
-      <Position30>
-        <Filename Value="scannerscreen.pas"/>
         <Caret Line="879" Column="15" TopLine="838"/>
-      </Position30>
+      </Position29>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>

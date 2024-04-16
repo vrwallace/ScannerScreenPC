@@ -13,6 +13,7 @@ uses
 {$R *.res}
 
 begin
+  Application.Scaled:=True;
   Application.Title:='Scanner Screen';
   RequireDerivedFormResource := True;
   Application.Initialize;
