@@ -576,7 +576,7 @@ begin
 
 
 
-  statictexttime.Font.size := trackbarfontheight.position;
+  statictexttime.Font.size := trackbarfontheight.position DIV 2;
   statictextfreq.Font.size := trackbarfontheight.position;
   statictextsystemname.font.size := trackbarfontheight.position;
   statictextdepartmentname.Font.size := trackbarfontheight.position;
@@ -1102,7 +1102,7 @@ end;
 
 procedure TForm1.TrackBarfontheightChange(Sender: TObject);
 begin
-  statictexttime.Font.size := trackbarfontheight.position;
+  statictexttime.Font.size := (trackbarfontheight.position)div 2;
 
   statictextfreq.Font.size := trackbarfontheight.position;
   statictextsystemname.font.size := trackbarfontheight.position;
